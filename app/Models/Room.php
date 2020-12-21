@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property $unique_id
  * @property $name
  * @property $description
- * @property $published
  * @property $available_from
  * @property $available_to
  * @property $is_published

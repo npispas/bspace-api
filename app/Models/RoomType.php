@@ -20,4 +20,14 @@ use Illuminate\Database\Eloquent\Model;
 class RoomType extends Model
 {
     use HasFactory;
+
+    /**
+     * Relationship with the Room model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rooms()
+    {
+        return $this->hasMany(Room::class);
+    }
 }
