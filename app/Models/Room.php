@@ -43,4 +43,14 @@ class Room extends Model
     {
         return $this->hasMany(RoomImage::class);
     }
+
+    /**
+     * Relationship with the RoomStay model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function roomStays()
+    {
+        return $this->belongsToMany(RoomStay::class);
+    }
 }

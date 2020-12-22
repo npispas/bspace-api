@@ -40,4 +40,14 @@ class RoomStay extends Model
     {
         return $this->hasMany(Guest::class);
     }
+
+    /**
+     * Relationship with the Room model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function rooms()
+    {
+        return $this->belongsToMany(Room::class);
+    }
 }
