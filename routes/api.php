@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::resource('/users', \App\Http\Controllers\Api\UserController::class)
+    ->except(['create', 'edit'])
+    ->middleware('auth:api')
+    ->names('users');
 
-Route::get('/users', 'App\Http\Controllers\Api\UsersController@index');
+Route::resource('/reservations', \App\Http\Controllers\Api\ReservationController::class)
+    ->except(['create', 'edit'])
+    ->middleware('auth:api')
+    ->names('reservations');
+
+Route::resource('/room_types', \App\Http\Controllers\Api\RoomTypeController::class)
+    ->except(['create', 'edit'])
+    ->middleware('auth:api')
+    ->names('room_types');
+
+Route::resource('/rooms', \App\Http\Controllers\Api\RoomController::class)
+    ->except(['create', 'edit'])
+    ->middleware('auth:api')
+    ->names('room_types');
