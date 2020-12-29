@@ -21,6 +21,7 @@ class Room extends JsonResource
             'unique_id' => $this->unique_id,
             'name' => $this->name,
             'description' => $this->description,
+            'interior_size' => $this->interior_size,
             'available_from' => $this->available_from,
             'available_to' => $this->available_to,
             'is_published' => $this->is_published,
