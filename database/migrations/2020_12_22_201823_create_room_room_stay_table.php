@@ -18,10 +18,15 @@ class CreateRoomRoomStayTable extends Migration
             $table->timestamps();
 
             $table->unsignedBigInteger('room_id');
-            $table->foreign('room_id')->references('id')->on('rooms');
+            $table->foreign('room_id')
+                ->references('id')
+                ->on('rooms');
 
             $table->unsignedBigInteger('room_stay_id');
-            $table->foreign('room_stay_id')->references('id')->on('room_stays');
+            $table->foreign('room_stay_id')
+                ->references('id')
+                ->on('room_stays')
+                ->onDelete('Cascade');
         });
     }
 

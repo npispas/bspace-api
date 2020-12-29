@@ -19,7 +19,10 @@ class CreateGuestImagesTable extends Migration
             $table->timestamps();
 
             $table->unsignedBigInteger('guest_id');
-            $table->foreign('guest_id')->references('id')->on('guests');
+            $table->foreign('guest_id')
+                ->references('id')
+                ->on('guests')
+                ->onDelete('Cascade');
         });
     }
 

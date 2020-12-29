@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class ReservationFactory extends Factory
 {
@@ -22,8 +23,16 @@ class ReservationFactory extends Factory
     public function definition()
     {
         return [
-            'unique_id' => $this->faker->uuid,
+            'unique_id' => uniqid('test-', false),
             'comments' => $this->faker->realText(20),
+            'status' => $this->faker->randomElement([
+                'confirmed',
+                'unconfirmed',
+                'canceled',
+                'checked-in',
+                'checked-out'
+            ]),
+            'owner_name' => $this->faker->name,
             'total_amount' => $this->faker->randomFloat('2'),
             'total_due' => $this->faker->randomFloat('2'),
             'currency' => $this->faker->currencyCode,

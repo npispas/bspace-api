@@ -17,6 +17,8 @@ class CreateReservationsTable extends Migration
             $table->id();
             $table->string('unique_id');
             $table->string('comments');
+            $table->string('status');
+            $table->string('owner_name');
             $table->unsignedDouble('total_amount');
             $table->unsignedDouble('total_due');
             $table->string('currency', 3);

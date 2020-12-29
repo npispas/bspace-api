@@ -22,7 +22,10 @@ class CreateRoomStaysTable extends Migration
             $table->timestamps();
 
             $table->unsignedBigInteger('reservation_id');
-            $table->foreign('reservation_id')->references('id')->on('reservations');
+            $table->foreign('reservation_id')
+                ->references('id')
+                ->on('reservations')
+                ->onDelete('Cascade');
         });
     }
 

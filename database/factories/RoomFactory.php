@@ -25,6 +25,7 @@ class RoomFactory extends Factory
             'unique_id' => $this->faker->uuid,
             'name' => $this->faker->name,
             'description' => $this->faker->realText(150),
+            'interior_size' => $this->faker->numberBetween(20, 120),
             'available_from' => $this->faker->date(),
             'available_to' => $this->faker->date(),
             'is_published' => $this->faker->boolean,

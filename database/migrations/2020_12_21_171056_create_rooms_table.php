@@ -18,6 +18,7 @@ class CreateRoomsTable extends Migration
             $table->string('unique_id');
             $table->string('name');
             $table->string('description');
+            $table->string('interior_size');
             $table->dateTime('available_from');
             $table->dateTime('available_to');
             $table->boolean('is_published');

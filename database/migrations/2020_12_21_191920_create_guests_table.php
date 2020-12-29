@@ -21,10 +21,16 @@ class CreateGuestsTable extends Migration
             $table->timestamps();
 
             $table->unsignedBigInteger('reservation_id');
-            $table->foreign('reservation_id')->references('id')->on('reservations');
+            $table->foreign('reservation_id')
+                ->references('id')
+                ->on('reservations')
+                ->onDelete('Cascade');
 
             $table->unsignedBigInteger('room_stay_id');
-            $table->foreign('room_stay_id')->references('id')->on('room_stays');
+            $table->foreign('room_stay_id')
+                ->references('id')
+                ->on('room_stays')
+                ->onDelete('Cascade');
         });
     }
 
