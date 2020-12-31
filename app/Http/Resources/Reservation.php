@@ -20,6 +20,8 @@ class Reservation extends JsonResource
             'unique_id' => $this->unique_id,
             'comments' => $this->comments,
             'owner_name' => $this->owner_name,
+            'guest_count' => $this->guest_count,
+            'room_count' => $this->room_count,
             'status' => $this->status,
             'total_amount' => $this->total_amount,
             'total_due' => $this->total_due,
