@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property $unique_id
  * @property $name
  * @property $description
+ * @property $interior_size
+ * @property $max_occupancy
+ * @property $min_occupancy
  * @property $available_from
  * @property $available_to
  * @property $is_published

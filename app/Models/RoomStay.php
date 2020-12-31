@@ -22,6 +22,13 @@ class RoomStay extends Model
     use HasFactory;
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['room_count'];
+
+    /**
      * Relationship with the Reservation model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -49,5 +56,15 @@ class RoomStay extends Model
     public function rooms()
     {
         return $this->belongsToMany(Room::class);
+    }
+
+    /**
+     * room_count accessor which calculates the room count attribute.
+     *
+     * @return int
+     */
+    public function getRoomCountAttribute()
+    {
+        return count($this->rooms);
     }
 }

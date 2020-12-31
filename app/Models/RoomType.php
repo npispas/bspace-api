@@ -12,8 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property $id
  * @property $code
  * @property $name
- * @property $max_occupancy
- * @property $min_occupancy
  * @property $created_at
  * @property $updated_at
  */

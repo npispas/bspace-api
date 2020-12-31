@@ -21,6 +21,13 @@ class Guest extends Model
     use HasFactory;
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['full_name'];
+
+    /**
      * Relationship with the Reservation model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -48,5 +55,15 @@ class Guest extends Model
     public function guestImage()
     {
         return $this->hasOne(GuestImage::class);
+    }
+
+    /**
+     * full_name accessor which calculates the room count attribute.
+     *
+     * @return int
+     */
+    public function getFullNameAttribute()
+    {
+        return sprintf("%s %s", $this->last_name, $this->first_name);
     }
 }
