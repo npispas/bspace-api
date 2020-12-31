@@ -5480,7 +5480,7 @@ a.badge:focus {
     border-radius: 10rem;
 }
 
-.badge-primary, .confirmed {
+.badge-primary, .badge-confirmed {
     color: #fff;
     background-color: #2841f8;
 }
@@ -5514,7 +5514,7 @@ a.badge-secondary.focus {
     box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
 }
 
-.badge-success, .checked-in {
+.badge-success, .badge-checked-in, .badge-published {
     color: #fff;
     background-color: #0cc95c;
 }
@@ -5548,7 +5548,7 @@ a.badge-info.focus {
     box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.5);
 }
 
-.badge-warning, .unconfirmed {
+.badge-warning, .badge-unconfirmed {
     color: #23263e;
     background-color: #ffc105;
 }
@@ -5565,7 +5565,7 @@ a.badge-warning.focus {
     box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
 }
 
-.badge-danger, .canceled {
+.badge-danger, .badge-canceled, .badge-unpublished {
     color: #fff;
     background-color: #dc3546;
 }
@@ -5582,7 +5582,7 @@ a.badge-danger.focus {
     box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
 }
 
-.badge-light, .checked-out {
+.badge-light, .badge-checked-out {
     color: #23263e;
     background-color: #efefef;
 }
@@ -11006,7 +11006,7 @@ button.bg-dark:focus {
     color: #fff !important;
 }
 
-.text-primary {
+.text-primary, .text-confirmed {
     color: #2841f8 !important;
 }
 
@@ -11024,7 +11024,7 @@ a.text-secondary:focus {
     color: #494f54 !important;
 }
 
-.text-success {
+.text-success, .text-checked-in {
     color: #0cc95c !important;
 }
 
@@ -11042,7 +11042,7 @@ a.text-info:focus {
     color: #0f6674 !important;
 }
 
-.text-warning {
+.text-warning, .text-unconfirmed {
     color: #ffc105 !important;
 }
 
@@ -11051,7 +11051,7 @@ a.text-warning:focus {
     color: #ba8b00 !important;
 }
 
-.text-danger {
+.text-danger, .text-canceled {
     color: #dc3546 !important;
 }
 
@@ -11060,7 +11060,7 @@ a.text-danger:focus {
     color: #a71d2a !important;
 }
 
-.text-light {
+.text-light, .text-checked-out {
     color: #efefef !important;
 }
 
@@ -12244,7 +12244,7 @@ a.text-dark:focus {
 
 .listing-content-meta .value {
     color: #23263e;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 28px;
     font-weight: 600;
 }
@@ -15870,7 +15870,7 @@ blockquote {
 
     min-height: 70px;
     background-color: #fff;
-    border-radius: 10px 10px 0px 0px;
+    border-radius: 0px 0px 0px 0px;
     padding: 24px 3px;
     -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.09);
     -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.09);
