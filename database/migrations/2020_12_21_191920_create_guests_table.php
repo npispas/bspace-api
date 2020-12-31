@@ -18,6 +18,9 @@ class CreateGuestsTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
+            $table->string('nationality');
+            $table->string('phone');
+            $table->string('address');
             $table->timestamps();
 
             $table->unsignedBigInteger('reservation_id');

@@ -45,8 +45,17 @@ class ReservationSeeder extends Seeder
             ->for($roomStay)
             ->create();
 
+        $guest2 = Guest::factory()
+            ->for($reservation)
+            ->for($roomStay)
+            ->create();
+
         GuestImage::factory()
             ->for($guest)
+            ->create();
+
+        GuestImage::factory()
+            ->for($guest2)
             ->create();
     }
 }
