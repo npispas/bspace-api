@@ -13,22 +13,3 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('/users', \App\Http\Controllers\Api\UserController::class)
-    ->except(['create', 'edit'])
-    ->middleware('auth:api')
-    ->names('users');
-
-Route::resource('/reservations', \App\Http\Controllers\Api\ReservationController::class)
-    ->except(['create', 'edit'])
-    ->middleware('auth:api')
-    ->names('reservations');
-
-Route::resource('/room_types', \App\Http\Controllers\Api\RoomTypeController::class)
-    ->except(['create', 'edit'])
-    ->middleware('auth:api')
-    ->names('room_types');
-
-Route::resource('/rooms', \App\Http\Controllers\Api\RoomController::class)
-    ->except(['create', 'edit'])
-    ->middleware('auth:api')
-    ->names('room_types');

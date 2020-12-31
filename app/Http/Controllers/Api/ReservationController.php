@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use App\Http\Resources\Reservation as ReservationResource;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 
 class ReservationController extends Controller
 {
@@ -44,7 +48,7 @@ class ReservationController extends Controller
             'roomStays.rooms.roomType',
             'roomStays.rooms.roomImages',
             'roomStays.guests',
-            'roomStays.guests.guestImage',
+            'roomStays.guests.guestImage'
         ));
     }
 
@@ -64,10 +68,25 @@ class ReservationController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Reservation $reservation
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     * @throws Exception
      */
     public function destroy(Reservation $reservation)
     {
-        //
+        $reservation->delete();
+
+        return response()->json([], Response::HTTP_OK);
+    }
+
+    /**
+     * Generate a test reservation.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function generate()
+    {
+        Artisan::call('reservations:generate', ['number' => '1']);
+
+        return response()->json([], Response::HTTP_OK);
     }
 }
