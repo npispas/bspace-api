@@ -25,6 +25,9 @@ class GuestFactory extends Factory
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,
+            'nationality' => $this->faker->country,
+            'phone' => $this->faker->phoneNumber,
+            'address' => $this->faker->address,
             'created_at' => now(),
             'updated_at' => now()
         ];

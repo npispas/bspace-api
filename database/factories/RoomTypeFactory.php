@@ -23,9 +23,13 @@ class RoomTypeFactory extends Factory
     {
         return [
             'code' => $this->faker->word(),
-            'name' => $this->faker->name,
-            'max_occupancy' => $this->faker->numberBetween(2, 4),
-            'min_occupancy' => $this->faker->numberBetween(1, 2),
+            'name' => $this->faker->randomElement([
+                    'Meeting Room',
+                    'Presentation Room',
+                    'Conference Room',
+                    'Professional Room',
+                    'Office Room',
+            ]),
             'created_at' => now(),
             'updated_at' => now()
         ];
