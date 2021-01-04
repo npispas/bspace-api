@@ -8,11 +8,11 @@ jQuery(document).ready(function($) {
 
 
     }
-    /* preloader js **/
-
-    if ($(".preloader").length) {
-        $('.preloader').delay(1000).fadeOut('slow');
-    }
+    // /* preloader js **/
+    //
+    // if ($(".preloader").length) {
+    //     $('.preloader').delay(1000).fadeOut('slow');
+    // }
     /* checkboxes js **/
 
     if ($(".your-checkbox").length) {
