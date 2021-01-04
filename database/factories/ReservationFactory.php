@@ -33,8 +33,8 @@ class ReservationFactory extends Factory
                 'checked-out'
             ]),
             'owner_name' => $this->faker->name,
-            'total_amount' => $this->faker->randomFloat('2'),
-            'total_due' => $this->faker->randomFloat('2'),
+            'total_amount' => $this->faker->randomFloat('2', 10.00, 50.000),
+            'total_due' => $this->faker->randomFloat('2', 10.00, 50.000),
             'currency' => $this->faker->currencyCode,
             'created_at' => now(),
             'updated_at' => now()

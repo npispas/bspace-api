@@ -24,7 +24,7 @@
                     </div>
                     <div class="db-card-body">
 
-                        <vue-select :options="roomTypes" :reduce="roomType => roomType.id" label="name" v-model="roomTypeId"></vue-select>
+
 
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                         <!-- listing dropzone start  -->
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"></vue-dropzone>
+
                             </div>
                         </div>
                         <!-- listing dropzone close  -->
@@ -130,18 +130,11 @@
 </template>
 
 <script>
-import VueDropzone from "vue2-dropzone";
-import 'vue2-dropzone/dist/vue2Dropzone.min.css'
-
-import VueSelect from "vue-select";
-import "vue-select/dist/vue-select.css";
-
 import roomTypeMixin from "../../mixins/roomTypeMixin";
 import roomMixin from "../../mixins/roomMixin";
 
 export default {
     name: "Create",
-    components: {VueDropzone, VueSelect},
     mixins: [roomTypeMixin, roomMixin],
 
     data() {

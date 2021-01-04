@@ -30,19 +30,19 @@ class RoleSeeder extends Seeder
         ]);
 
         // User Role permissions
-        $userRole->givePermissionTo('create reservations');
+        $userRole->givePermissionTo('create_reservations');
 
         // Staff Role permissions
-        $staffRole->givePermissionTo('create reservations');
-        $staffRole->givePermissionTo('edit reservations');
-        $staffRole->givePermissionTo('delete reservations');
-        $staffRole->givePermissionTo('create rooms');
-        $staffRole->givePermissionTo('edit rooms');
-        $staffRole->givePermissionTo('delete rooms');
+        $staffRole->givePermissionTo('create_reservations');
+        $staffRole->givePermissionTo('edit_reservations');
+        $staffRole->givePermissionTo('delete_reservations');
+        $staffRole->givePermissionTo('create_rooms');
+        $staffRole->givePermissionTo('edit_rooms');
+        $staffRole->givePermissionTo('delete_rooms');
 
         // Admin Role permissions
-        $adminRole->givePermissionTo('create users');
-        $adminRole->givePermissionTo('edit users');
-        $adminRole->givePermissionTo('delete users');
+        $adminRole->givePermissionTo('create_users');
+        $adminRole->givePermissionTo('edit_users');
+        $adminRole->givePermissionTo('delete_users');
     }
 }

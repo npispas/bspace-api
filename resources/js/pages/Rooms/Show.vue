@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import VueSlickCarousel from "vue-slick-carousel";
 import roomMixin from "../../mixins/roomMixin";
 import RoomDetailsCard from "../../components/Rooms/RoomDetailsCard";
 import RoomDescriptionCard from "../../components/Rooms/RoomDescriptionCard";
@@ -33,7 +32,7 @@ import RoomAmenitiesCard from "../../components/Rooms/RoomAmenitiesCard";
 
 export default {
     name: "Show",
-    components: {RoomAmenitiesCard, RoomImagesCarousel, RoomDescriptionCard, RoomDetailsCard, VueSlickCarousel},
+    components: {RoomAmenitiesCard, RoomImagesCarousel, RoomDescriptionCard, RoomDetailsCard},
     mixins: [roomMixin],
 
     mounted() {

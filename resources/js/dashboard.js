@@ -11,7 +11,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routes/dashboard-routes';
 
-import Spinner from "./components/Elements/Spinner";
+import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css';
+import '@mdi/font/css/materialdesignicons.css';
 
 /**
  * The following block of code may be used to automatically register your
@@ -27,9 +29,6 @@ import Spinner from "./components/Elements/Spinner";
 // Application Root Vue Template
 Vue.component('root', require('./components/Root.vue').default);
 
-// Application Global Component
-Vue.component('spinner', Spinner);
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -37,19 +36,16 @@ Vue.component('spinner', Spinner);
  */
 
 Vue.use(VueRouter);
+Vue.use(Vuetify);
 
 const router = new VueRouter({
     mode: 'history',
     base: '/dashboard',
-    routes
+    routes,
 });
-
-router.beforeEach((to, from, next) => {
-    Spinner.methods.preload(500);
-    next();
-})
 
 new Vue({
     el: '#app',
     router,
+    vuetify: new Vuetify()
 });

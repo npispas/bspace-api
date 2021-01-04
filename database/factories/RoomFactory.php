@@ -22,7 +22,7 @@ class RoomFactory extends Factory
     public function definition()
     {
         return [
-            'unique_id' => $this->faker->uuid,
+            'unique_id' => uniqid('room-', false),
             'name' => $this->faker->name,
             'description' => $this->faker->realText(120),
             'interior_size' => $this->faker->numberBetween(20, 120),

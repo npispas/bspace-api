@@ -11,15 +11,6 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
-    require('./theme/main-js');
-    require('./theme/jquery.easing.min');
-    require('./theme/scrolling-nav');
-    require('../lib/select2/select2.full.min');
-    require('../lib/select2/select2.min');
-    // require('../lib/dropzone/dropzone.min');
-    require('../lib/tinymce/tinymce.min');
-    require('../lib/raty-js/lib/jquery.raty');
-    require('./theme/jquery.slimscroll.min');
     console.info('Main plugins loaded.')
 } catch (e) {
     console.error(e);
