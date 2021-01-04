@@ -2,9 +2,9 @@ export default {
     data() {
         return {
             reservations: [],
-            filteredReservations: [],
             reservation: {},
-            roomStays: []
+            roomStays: [],
+            room: {}
         }
     },
 
@@ -15,7 +15,6 @@ export default {
                     console.log("Reservations Index Page Axios");
                     console.log(response.data.data);
                     this.reservations = response.data.data;
-                    this.filteredReservations = response.data.data;
                 }).catch( error => {
                     console.error(error.message);
                 })
@@ -28,6 +27,7 @@ export default {
                     console.log(response.data.data);
                     this.reservation = response.data.data;
                     this.roomStays = this.reservation.room_stays[0];
+                    this.room = this.roomStays.rooms[0];
                 }).catch( error => {
                 console.error(error.message);
             })
@@ -37,7 +37,7 @@ export default {
             axios.delete(`api/reservations/${reservationId}`)
                 .then( response => {
                     console.log("Deleted reservation");
-                    console.log(response.data.data);
+                    console.log(response);
                     this.reservations = _.remove(this.reservations, (reservation => reservation.id !== reservationId));
                     this.filteredReservations = this.reservations;
                 }).catch( error => {

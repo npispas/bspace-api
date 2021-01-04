@@ -1,49 +1,89 @@
 <template>
-    <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12 col-12">
-        <nav class="navbar db-sidenav">
-            <div class="offcanvas-collapse" id="db-sidenav">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <router-link to="/overview" class="nav-link" active-class="active">
-                            <i class="fas fa-fw fa-tachometer-alt"></i>Overview
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/reservations" class="nav-link" active-class="active">
-                            <i class="fas fa-fw fa-list"></i>Reservations
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/rooms" class="nav-link" active-class="active">
-                            <i class="fas fa-fw fa-building"></i>Rooms
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/users" class="nav-link" active-class="active">
-                            <i class="fas fa-fw fa-user"></i>Users
-                        </router-link>
-                    </li>
+    <v-navigation-drawer
+        app
+        floating
+        clipped
+        :mini-variant="mini"
+        permanent
+    >
+        <v-list
+            :class="{'ma-5': !mini}"
+            rounded
+            dense
+        >
+            <v-list-item link to="/overview">
+                <v-list-item-icon>
+                    <v-icon :size="iconSize">mdi-view-dashboard</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Overview</v-list-item-title>
+            </v-list-item>
+            <v-list-item link to="/reservations">
+                <v-list-item-icon>
+                    <v-icon :size="iconSize">mdi-format-list-bulleted</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Reservations</v-list-item-title>
+            </v-list-item>
+            <v-list-item link to="/rooms">
+                <v-list-item-icon>
+                    <v-icon :size="iconSize">mdi-office-building</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Rooms</v-list-item-title>
+            </v-list-item>
+            <v-list-item link to="/users">
+                <v-list-item-icon>
+                    <v-icon :size="iconSize">mdi-account-multiple</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Users</v-list-item-title>
+            </v-list-item>
+            <v-list-item link to="/settings">
+                <v-list-item-icon>
+                    <v-icon :size="iconSize">mdi-cog</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Settings</v-list-item-title>
+            </v-list-item>
 
-                    <li class="nav-item">
-                        <router-link to="/profile" class="nav-link" active-class="active">
-                            <i class="fas fa-fw fa-cogs"></i>Settings
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" v-on:click.prevent="logout"><i class="fas fa-fw fa-sign-out-alt"></i>Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
+            <v-divider></v-divider>
+
+            <v-list-item @click.prevent="logout">
+                <v-list-item-icon>
+                    <v-icon :size="iconSize">mdi-logout</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item>
+        </v-list>
+    </v-navigation-drawer>
 </template>
 
 <script>
     import logoutMixin from "../../mixins/logoutMixin";
+    import FooterSection from "../Sections/FooterSection";
 
     export default {
         name: "SideNav",
+        components: {FooterSection},
         mixins: [logoutMixin],
+
+        data () {
+            return {
+                drawer: null,
+            }
+        },
+
+        computed: {
+            mini() {
+                return this.$vuetify.breakpoint.mdAndDown;
+            },
+
+            iconSize() {
+                switch (this.$vuetify.breakpoint.name) {
+                    case "xl": return 'x-large';
+                    case "lg": return 'large';
+                    case "md": return 'medium';
+                    case "sm": return 'small';
+                    case "xs": return 'x-small';
+                }
+            }
+        }
     }
 </script>
 

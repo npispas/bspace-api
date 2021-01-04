@@ -1,37 +1,25 @@
 <template>
-    <div>
-        <spinner/>
+    <v-app id="inspire" app>
 
-        <div class="db-wrapper">
-            <header-section/>
+        <tool-bar/>
 
-            <!-- content start -->
-            <div class="db-content">
-                <div class="container-fluid">
-                    <div class="row">
+        <side-nav/>
 
-                        <side-nav/>
+        <v-main>
+            <router-view/>
+        </v-main>
 
-                        <router-view/>
-
-                    </div>
-                </div>
-            </div>
-            <!-- content close -->
-
-            <footer-section/>
-        </div>
-    </div>
+        <footer-section/>
+    </v-app>
 </template>
 
 <script>
-
-import HeaderSection from "./Sections/HeaderSection";
 import FooterSection from "./Sections/FooterSection";
 import SideNav from "./Navigation/SideNav";
+import ToolBar from "./Navigation/ToolBar";
 
 export default {
     name: "Root",
-    components: {FooterSection, HeaderSection, SideNav},
+    components: {ToolBar, FooterSection, SideNav},
 }
 </script>

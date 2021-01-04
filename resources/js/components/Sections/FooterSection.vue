@@ -1,17 +1,21 @@
 <template>
-    <!-- footer start -->
-    <div class="db-footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="db-footer-copyright">
-                        <p class="db-footer-copyright-text">2020 &nbsp;©&nbsp; <router-link to="dashboard"> Spacely</router-link></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- footer close -->
+    <v-footer
+        app
+        fixed
+        padless
+        class="z-index-5"
+    >
+        <v-card
+            width="100%"
+            elevation="5"
+            class="text-center"
+            tile
+        >
+            <v-card-text>
+                {{ new Date().getFullYear() }} &copy; <span class="text--blue"><strong>B-Space</strong></span>
+            </v-card-text>
+        </v-card>
+    </v-footer>
 </template>
 
 <script>
@@ -19,3 +23,9 @@
         name: "Footer"
     }
 </script>
+
+<style scoped>
+ .z-index-5 {
+     z-index: 5;
+ }
+</style>

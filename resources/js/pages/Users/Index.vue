@@ -1,107 +1,67 @@
 <template>
-    <!-- sub content start -->
-    <div class="col-xl-10 col-lg-9 col-md-12 col-sm-12 col-12">
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="db-pageheader d-xl-flex justify-content-between">
-                    <div class="">
-                        <h2 class="db-pageheader-title">Users Management</h2>
-                        <p class="db-pageheader-text"> Manage your office space listing in one single dashboard. Its has features Pending, Approved and Removed listing.</p>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <router-link to="reservations/create" class="btn btn-primary"> Add new user</router-link>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="card-lines-tab">
-                    <ul class="nav nav-pills card-lines-tab-header" id="pills-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="" id="all-users" role="tab" data-toggle="pill" aria-selected="true" v-on:click="role = ''">All Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="" id="user" role="tab" data-toggle="pill" aria-selected="false" v-on:click="role = 'user'">User</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="" id="staff" role="tab" data-toggle="pill" aria-selected="false" v-on:click="role = 'staff'">Staff</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="" id="admin" data-toggle="pill" role="tab" aria-selected="false" v-on:click="role = 'admin'">Admin</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content card-listing-tab-body" id="pills-tabContent">
-                        <div class="tab-pane fade show active" id="pills-listing" role="tabpanel" aria-labelledby="pills-listing-tab">
-                            <div class="table-responsive listing-table table-hover">
-                                <table class="table first">
-                                    <thead>
-                                    <tr>
-                                        <th>Image</th>
-                                        <th>Username</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Verified</th>
-                                        <th data-orderable="false">Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="user in filteredUsers">
-                                        <td>
-                                            <div class="listing-table-img"><a href="#">
-                                                <img src="../../../images/avatar-1.jpg"></a>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="listing-table-string"><a href="#"></a>
-                                                <p>{{ user.username }}</p>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="listing-table-string">
-                                                <p>{{ user.full_name }}</p>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="listing-table-string">
-                                                <p>{{ user.email }}</p>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="listing-table-status">
-                                                <p>{{ user.roles[0].name }}</p>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="listing-table-string">
-                                                <p>{{ user.email_verified_at }}</p>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="listing-table-action">
-                                                <div class="dropdown">
-                                                    <a href="#" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item" href="#">Edit Details</a>
-                                                        <a class="dropdown-item" href="#" v-on:click.prevent="deleteUser(user.id)">Delete</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- sub content close -->
+    <v-container
+        fluid
+        class="mt-5"
+    >
+        <v-card
+            elevation="10"
+        >
+            <v-data-table
+                :headers="headers"
+                :items="users"
+                :loading="loading"
+                loading-text="Fetching users... Please wait"
+            >
+                <template v-slot:top>
+                    <v-toolbar
+                        flat
+                    >
+                        <v-toolbar-title>Manage Users</v-toolbar-title>
+
+                        <v-dialog v-model="dialogDelete" max-width="500px">
+                            <v-card>
+                                <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                                    <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                                    <v-spacer></v-spacer>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-toolbar>
+                </template>
+
+                <template v-slot:item.actions="{ item }">
+                    <v-icon
+                        small
+                        @click=""
+                    >
+                        mdi-pencil
+                    </v-icon>
+                    <v-icon
+                        :class="{'mx-2': $vuetify.breakpoint.mdAndUp}"
+                        small
+                        @click="$router.push(`/reservations/${item.id}`)"
+                    >
+                        mdi-eye
+                    </v-icon>
+                    <v-icon
+                        small
+                        @click="deleteItem(item.id)"
+                    >
+                        mdi-delete
+                    </v-icon>
+                </template>
+
+                <template v-slot:item.role="{ item }">
+                    <v-chip dark :color="getColor(item.roles[0].name)">
+                        {{ item.roles[0].name }}
+                    </v-chip>
+                </template>
+            </v-data-table>
+        </v-card>
+    </v-container>
 </template>
 
 <script>
@@ -113,18 +73,58 @@ export default {
 
     data() {
         return {
-            role: ''
+            dialog: false,
+            dialogDelete: false,
+            headers: [
+                { text: 'Username', align: 'start', value: 'username' },
+                { text: 'Name', value: 'full_name' },
+                { text: 'Email', value: 'email' },
+                { text: 'Role', value: 'role' },
+                { text: 'Verified', value: 'email_verified_at'},
+                { text: 'Actions', value: 'actions'},
+            ],
+            loading: true
         }
     },
 
     watch: {
-        role: function() {
-            this.filterUsersByRole(this.role);
-        }
+        users: function() {
+            this.loading = false;
+        },
+        dialog (val) {
+            val || this.close()
+        },
+        dialogDelete (val) {
+            val || this.closeDelete()
+        },
     },
 
     mounted() {
         this.getUsers();
     },
+
+    methods: {
+        getColor: function (status) {
+            switch (status) {
+                case 'admin': return 'blue';
+                case 'staff': return 'blue';
+                case 'user': return 'gray';
+            }
+        },
+
+        closeDelete () {
+            this.dialogDelete = false;
+        },
+
+        deleteItem (item) {
+            this.editedIndex = item;
+            this.dialogDelete = true;
+        },
+
+        deleteItemConfirm () {
+            this.deleteReservation(this.editedIndex);
+            this.closeDelete();
+        },
+    }
 }
 </script>
