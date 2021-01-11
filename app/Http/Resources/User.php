@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Permission as PermissionResource;
 
 class User extends JsonResource
 {
@@ -22,6 +23,7 @@ class User extends JsonResource
             'full_name' => $this->full_name,
             'email' => $this->email,
             'roles' => $this->roles,
+            'permissions' => PermissionResource::collection($this->getAllPermissions()),
             'email_verified_at' => $this->email_verified_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
