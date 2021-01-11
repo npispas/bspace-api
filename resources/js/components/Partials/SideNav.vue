@@ -17,7 +17,7 @@
                 </v-list-item-icon>
                 <v-list-item-title>Overview</v-list-item-title>
             </v-list-item>
-            <v-list-item link to="/calendar">
+            <v-list-item v-if="$can('view', 'Reservation')" link to="/calendar">
                 <v-list-item-icon>
                     <v-icon :size="iconSize">mdi-calendar-month</v-icon>
                 </v-list-item-icon>

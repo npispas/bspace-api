@@ -34,6 +34,13 @@ const router =  new VueRouter({
         {
             path: '/calendar',
             component: Calendar,
+            beforeEnter(to, from , next) {
+                if (ability.can('view', 'Reservation')) {
+                    next()
+                } else {
+                    next('/overview')
+                }
+            },
         },
         {
             path: '/reservations',
@@ -160,11 +167,15 @@ const router =  new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    router.app.loading = true;
-    PermissionService.fetchAuthUserPermissions().then((response) => {
-        ability.update(response)
+    if (to.path === '/login') {
         next()
-    })
+    } else {
+        router.app.loading = true;
+        PermissionService.fetchAuthUserPermissions().then((response) => {
+            ability.update(response)
+            next()
+        })
+    }
 })
 
 export default router
