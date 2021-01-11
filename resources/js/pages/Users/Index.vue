@@ -17,7 +17,18 @@
                         flat
                     >
                         <v-toolbar-title>Manage Users</v-toolbar-title>
-
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            v-if="$can('create', 'User')"
+                            fab
+                            dark
+                            x-small
+                            :retain-focus-on-click="false"
+                            class="indigo accent-4 mb-2"
+                            to="users/create"
+                        >
+                            <v-icon>mdi-plus</v-icon>
+                        </v-btn>
                         <v-dialog v-model="dialogDelete" max-width="500px">
                             <v-card>
                                 <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
@@ -31,33 +42,32 @@
                         </v-dialog>
                     </v-toolbar>
                 </template>
-
                 <template v-slot:item.actions="{ item }">
                     <v-icon
+                        v-if="$can('edit', 'User')"
                         small
-                        @click=""
+                        @click="$router.push(`/users/${item.id}/edit`)"
                     >
                         mdi-pencil
                     </v-icon>
                     <v-icon
-                        :class="{'mx-2': $vuetify.breakpoint.mdAndUp}"
-                        small
-                        @click="$router.push(`/reservations/${item.id}`)"
-                    >
-                        mdi-eye
-                    </v-icon>
-                    <v-icon
+                        v-if="$can('delete', 'User')"
                         small
                         @click="deleteItem(item.id)"
                     >
                         mdi-delete
                     </v-icon>
                 </template>
-
                 <template v-slot:item.role="{ item }">
                     <v-chip dark :color="getColor(item.roles[0].name)">
                         {{ item.roles[0].name }}
                     </v-chip>
+                </template>
+                <template v-slot:item.username="{ item }">
+                    <v-avatar size="36px">
+                        <v-img src="../../../images/avatar-1.jpg" />
+                    </v-avatar>
+                        {{ item.username }}
                 </template>
             </v-data-table>
         </v-card>
@@ -65,14 +75,24 @@
 </template>
 
 <script>
-import userMixin from "../../mixins/userMixin";
+import spinnerMixin from "../../mixins/spinnerMixin";
+import UserService from "../../services/userService";
 
 export default {
     name: "Index",
-    mixins: [userMixin],
+    mixins: [spinnerMixin],
+
+    beforeRouteEnter (to, from, next) {
+        UserService.fetchUsers().then((response) => {
+            next(vm => {
+                vm.users = response
+            })
+        })
+    },
 
     data() {
         return {
+            users: [],
             dialog: false,
             dialogDelete: false,
             headers: [
@@ -88,7 +108,7 @@ export default {
     },
 
     watch: {
-        users: function() {
+        users() {
             this.loading = false;
         },
         dialog (val) {
@@ -97,10 +117,6 @@ export default {
         dialogDelete (val) {
             val || this.closeDelete()
         },
-    },
-
-    mounted() {
-        this.getUsers();
     },
 
     methods: {
@@ -122,8 +138,10 @@ export default {
         },
 
         deleteItemConfirm () {
-            this.deleteReservation(this.editedIndex);
-            this.closeDelete();
+            UserService.deleteUser(this.editedIndex).then(() => {
+                this.users.splice(this.users.indexOf(this.editedIndex), 1)
+            })
+            this.closeDelete()
         },
     }
 }
