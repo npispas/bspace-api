@@ -165,8 +165,6 @@ export default {
 
     beforeRouteEnter (to, from, next) {
         ReservationService.fetchReservations().then((response) => {
-            console.log('Hello Before Route Enter')
-            console.log(response)
             next(vm => {
                 vm.loading = false
                 vm.reservations = response
