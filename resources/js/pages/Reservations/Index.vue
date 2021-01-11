@@ -21,6 +21,7 @@
                         <v-spacer></v-spacer>
 
                         <v-btn
+                            v-if="$can('create', 'Reservation')"
                             fab
                             dark
                             x-small
@@ -47,12 +48,14 @@
 
                 <template v-slot:item.actions="{ item }">
                     <v-icon
+                        v-if="$can('edit', 'Reservation')"
                         small
-                        @click=""
+                        @click="$router.push(`/reservations/${item.id}/edit`)"
                     >
                         mdi-pencil
                     </v-icon>
                     <v-icon
+                        v-if="$can('view', 'Reservation')"
                         :class="{'mx-2': $vuetify.breakpoint.mdAndUp}"
                         small
                         @click="$router.push(`/reservations/${item.id}`)"
@@ -60,6 +63,7 @@
                         mdi-eye
                     </v-icon>
                     <v-icon
+                        v-if="$can('delete', 'Reservation')"
                         small
                         @click="deleteItem(item.id)"
                     >
@@ -86,14 +90,24 @@
 </template>
 
 <script>
-    import reservationMixin from "../../mixins/reservationMixin";
+    import ReservationService from "../../services/reservationService"
+    import spinnerMixin from "../../mixins/spinnerMixin";
 
     export default {
         name: "Index",
-        mixins: [reservationMixin],
+        mixins: [spinnerMixin],
+
+        beforeRouteEnter (to, from, next) {
+            ReservationService.fetchReservations().then((response) => {
+                next(vm => {
+                    vm.reservations = response
+                })
+            })
+        },
 
         data() {
             return {
+                reservations: [],
                 dialog: false,
                 dialogDelete: false,
                 headers: [
@@ -103,7 +117,7 @@
                     { text: 'Owner', value: 'owner_name' },
                     { text: 'Guests', value: 'guest_count' },
                     { text: 'Total', value: 'total' },
-                    { text: 'Actions', value: 'actions', sortable: false },
+                    { text: 'Actions', value: 'actions', sortable: false }
                 ],
                 loading: true
             }
@@ -111,7 +125,7 @@
 
         watch: {
             reservations: function() {
-                this.loading = false;
+                this.loading = false
             },
             dialog (val) {
                 val || this.close()
@@ -121,34 +135,40 @@
             },
         },
 
-        mounted() {
-            this.getReservations();
-        },
-
         methods: {
             getColor: function (status) {
                 switch (status) {
-                    case 'checked-in': return 'green';
-                    case 'checked-out': return 'gray';
-                    case 'confirmed': return 'blue';
-                    case 'unconfirmed': return 'orange';
-                    case 'canceled': return 'red';
+                    case 'checked-in': return 'green'
+                    case 'checked-out': return 'gray'
+                    case 'confirmed': return 'blue'
+                    case 'unconfirmed': return 'orange'
+                    case 'canceled': return 'red'
                 }
             },
 
             closeDelete () {
-                this.dialogDelete = false;
+                this.dialogDelete = false
             },
 
             deleteItem (item) {
-                this.editedIndex = item;
-                this.dialogDelete = true;
+                this.editedIndex = item
+                this.dialogDelete = true
             },
 
             deleteItemConfirm () {
-                this.deleteReservation(this.editedIndex);
-                this.closeDelete();
+                ReservationService.deleteReservation(this.editedIndex).then(() => {
+                    this.reservations.splice(this.reservations.indexOf(this.editedIndex), 1)
+                })
+                this.closeDelete()
             },
+
+            reservationsGenerate () {
+                ReservationService.reservationsGenerate().then(() => {
+                    ReservationService.fetchReservations().then(response => {
+                        this.reservations = response
+                    })
+                })
+            }
         }
     }
 </script>

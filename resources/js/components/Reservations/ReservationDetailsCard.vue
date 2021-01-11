@@ -19,7 +19,6 @@
                     <v-icon>mdi-arrow-left</v-icon>
                 </v-btn>
             </v-card-title>
-
             <v-card-text class="pa-0">
                 <v-row no-gutters>
                     <v-col sm="6" md="3" lg="3" xl="3" class="border pa-3">
@@ -29,32 +28,26 @@
                         <br>
                         <span class="text-md-subtitle-2 text-muted">Status</span>
                     </v-col>
-
                     <v-col sm="6" md="3" lg="3" xl="3" class="border pa-3">
                         <v-icon class="pb-4">mdi-account-cash-outline</v-icon>
                         <br>
                         <span><strong>{{ `${reservation.total_amount} ${reservation.currency}` }}</strong></span>
                         <br>
                         <span class="text-md-subtitle-2 text-muted">Total</span>
-
                     </v-col>
-
                     <v-col sm="6" md="3" lg="3" xl="3" class="border pa-3">
                         <v-icon class="pb-4">mdi-account-supervisor-outline</v-icon>
                         <br>
                         <span><strong>{{ reservation.guest_count }}</strong></span>
                         <br>
                         <span class="text-md-subtitle-2 text-muted">Guests</span>
-
                     </v-col>
-
                     <v-col sm="6" md="3" lg="3" xl="3" class="border pa-3">
                         <v-icon class="pb-4">mdi-office-building-outline</v-icon>
                         <br>
                         <span><strong>{{ reservation.room_count }}</strong></span>
                         <br>
                         <span class="text-md-subtitle-2 text-muted">Rooms</span>
-
                     </v-col>
                 </v-row>
             </v-card-text>

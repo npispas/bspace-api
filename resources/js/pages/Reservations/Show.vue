@@ -21,18 +21,34 @@
 </template>
 
 <script>
-import reservationMixin from "../../mixins/reservationMixin";
 import ReservationDetailsCard from "../../components/Reservations/ReservationDetailsCard";
 import GuestCard from "../../components/Reservations/GuestCard";
 import RoomCard from "../../components/Reservations/RoomCard";
+import spinnerMixin from "../../mixins/spinnerMixin";
+
+import ReservationService from "../../services/reservationService";
 
 export default {
     name: "Show",
     components: {RoomCard, GuestCard, ReservationDetailsCard},
-    mixins: [reservationMixin],
+    mixins: [spinnerMixin],
 
-    mounted() {
-        this.getReservation(this.$route.params.reservationId);
+    data() {
+        return {
+            reservation: {},
+            roomStays: [],
+            room: {}
+        }
+    },
+
+    beforeRouteEnter (to, from, next) {
+        ReservationService.fetchReservation(to.params.reservationId).then((response) => {
+            next(vm => {
+                vm.reservation = response
+                vm.roomStays = vm.reservation.room_stays[0]
+                vm.room = vm.roomStays.rooms[0]
+            });
+        });
     },
 }
 </script>
