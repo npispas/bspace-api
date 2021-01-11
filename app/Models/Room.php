@@ -54,6 +54,6 @@ class Room extends Model
      */
     public function roomStays()
     {
-        return $this->belongsToMany(RoomStay::class);
+        return $this->belongsToMany(RoomStay::class)->withTimestamps();
     }
 }

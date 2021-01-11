@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,7 +27,7 @@ class RoomStay extends Model
      *
      * @var array
      */
-    protected $appends = ['room_count'];
+    protected $appends = ['room_count', 'days'];
 
     /**
      * Relationship with the Reservation model
@@ -55,7 +56,7 @@ class RoomStay extends Model
      */
     public function rooms()
     {
-        return $this->belongsToMany(Room::class);
+        return $this->belongsToMany(Room::class)->withTimestamps();
     }
 
     /**
@@ -66,5 +67,18 @@ class RoomStay extends Model
     public function getRoomCountAttribute()
     {
         return count($this->rooms);
+    }
+
+    /**
+     * days accessor which calculates the total days of the stay.
+     *
+     * @return int
+     */
+    public function getDaysAttribute()
+    {
+        $startDate = Carbon::createFromFormat('Y-m-d', $this->start_date);
+        $endDate = Carbon::createFromFormat('Y-m-d', $this->end_date);
+
+        return $startDate->diffInDays($endDate);
     }
 }

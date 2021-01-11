@@ -24,6 +24,7 @@ class RoomStay extends JsonResource
             'end_hour' => $this->end_hour,
             'rooms' => RoomResource::collection($this->whenLoaded('rooms')),
             'guests' => GuestResource::collection($this->whenLoaded('guests')),
+            'days' => $this->days,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

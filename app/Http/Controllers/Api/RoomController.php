@@ -43,6 +43,7 @@ class RoomController extends Controller
             'room_type_id' => ['required', 'integer'],
             'is_published' => ['required', 'boolean'],
             'description' => ['required', 'string', 'max:191'],
+            'images' => ['required', 'array'],
         ]);
 
         $room = new Room();
@@ -59,6 +60,8 @@ class RoomController extends Controller
 
         $roomType = RoomType::findOrFail($request->get('room_type_id'));
         $roomType->rooms()->save($room);
+
+        // Todo Store Room Images
 
         return response()->json('', Response::HTTP_CREATED);
     }

@@ -8,7 +8,6 @@
         >
             <v-data-table
                 :headers="headers"
-                dense
                 :items="rooms"
                 :loading="loading"
                 loading-text="Fetching rooms... Please wait"
@@ -22,12 +21,13 @@
                         <v-spacer></v-spacer>
 
                         <v-btn
+                            v-if="$can('create', 'Room')"
                             fab
                             dark
                             x-small
                             :retain-focus-on-click="false"
                             class="indigo accent-4 mb-2"
-                            v-on:click.native="$router.push('create')"
+                            to="rooms/create"
                         >
                             <v-icon>mdi-plus</v-icon>
                         </v-btn>
@@ -48,12 +48,14 @@
 
                 <template v-slot:item.actions="{ item }">
                     <v-icon
+                        v-if="$can('edit', 'Room')"
                         small
                         @click=""
                     >
                         mdi-pencil
                     </v-icon>
                     <v-icon
+                        v-if="$can('view', 'Room')"
                         :class="{'mx-2': $vuetify.breakpoint.mdAndUp}"
                         small
                         @click="$router.push(`/rooms/${item.id}`)"
@@ -61,6 +63,7 @@
                         mdi-eye
                     </v-icon>
                     <v-icon
+                        v-if="$can('delete', 'Room')"
                         small
                         @click="deleteItem(item.id)"
                     >
@@ -86,15 +89,24 @@
 </template>
 
 <script>
-
-import roomMixin from "../../mixins/roomMixin";
+import RoomService from "../../services/roomService"
+import spinnerMixin from "../../mixins/spinnerMixin"
 
 export default {
     name: "Index",
-    mixins: [roomMixin],
+    mixins: [spinnerMixin],
+
+    beforeRouteEnter (to, from, next) {
+        RoomService.fetchRooms().then((response) => {
+            next(vm => {
+                vm.rooms = response
+            })
+        })
+    },
 
     data() {
         return {
+            rooms: [],
             dialog: false,
             dialogDelete: false,
             headers: [
@@ -114,7 +126,7 @@ export default {
 
     watch: {
         rooms: function() {
-            this.loading = false;
+            this.loading = false
         },
         dialog (val) {
             val || this.close()
@@ -124,30 +136,28 @@ export default {
         },
     },
 
-    mounted() {
-        this.getRooms();
-    },
-
     methods: {
         getColor: function (status) {
             switch (status) {
-                case 1: return 'green';
-                case 0: return 'red';
+                case 1: return 'green'
+                case 0: return 'red'
             }
         },
 
         closeDelete () {
-            this.dialogDelete = false;
+            this.dialogDelete = false
         },
 
         deleteItem (item) {
-            this.editedIndex = item;
-            this.dialogDelete = true;
+            this.editedIndex = item
+            this.dialogDelete = true
         },
 
         deleteItemConfirm () {
-            this.deleteRoom(this.editedIndex);
-            this.closeDelete();
+            RoomService.deleteRoom(this.editedIndex).then(() => {
+                this.rooms.splice(this.rooms.indexOf(this.editedIndex), 1)
+            })
+            this.closeDelete()
         },
     }
 }

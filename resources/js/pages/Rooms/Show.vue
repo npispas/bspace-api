@@ -24,19 +24,32 @@
 </template>
 
 <script>
-import roomMixin from "../../mixins/roomMixin";
+import RoomService from "../../services/roomService";
 import RoomDetailsCard from "../../components/Rooms/RoomDetailsCard";
 import RoomDescriptionCard from "../../components/Rooms/RoomDescriptionCard";
 import RoomImagesCarousel from "../../components/Rooms/RoomImagesCarousel";
 import RoomAmenitiesCard from "../../components/Rooms/RoomAmenitiesCard";
+import spinnerMixin from "../../mixins/spinnerMixin";
 
 export default {
     name: "Show",
     components: {RoomAmenitiesCard, RoomImagesCarousel, RoomDescriptionCard, RoomDetailsCard},
-    mixins: [roomMixin],
+    mixins: [spinnerMixin],
 
-    mounted() {
-        this.getRoom(this.$route.params.roomId);
+    beforeRouteEnter (to, from, next) {
+        RoomService.fetchRoom(to.params.roomId).then((response) => {
+            next(vm => {
+                vm.room = response
+                vm.roomType = vm.room.room_type
+            })
+        })
+    },
+
+    data() {
+        return {
+            room: {},
+            roomType: {}
+        }
     }
 }
 </script>

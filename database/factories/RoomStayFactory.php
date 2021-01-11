@@ -21,11 +21,14 @@ class RoomStayFactory extends Factory
      */
     public function definition()
     {
+        $randomDays = $this->faker->numberBetween(0, 10);
+        $randomHours = $this->faker->numberBetween(0, 4);
+
         return [
-            'start_date' => $this->faker->date(),
-            'start_hour' => $this->faker->time('H:i'),
-            'end_date' => $this->faker->date(),
-            'end_hour' => $this->faker->time('H:i'),
+            'start_date' => now()->addDays($randomDays)->format('Y-m-d'),
+            'start_hour' => now()->format('H:i'),
+            'end_date' => now()->addDays($randomDays)->format('Y-m-d'),
+            'end_hour' => now()->addHours($randomHours)->format('H:i'),
             'created_at' => now(),
             'updated_at' => now()
         ];
