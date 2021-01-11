@@ -100,8 +100,6 @@ export default {
         UserService.fetchUser(to.params.userId).then((userResponse) => {
             PermissionService.fetchPermissions().then((permissionResponse) => {
                 next(vm => {
-                    console.log(userResponse)
-                    console.log(permissionResponse)
                     vm.user = userResponse
                     vm.userRole = userResponse.roles[0]
                     vm.assignedPermissions = userResponse.permissions
