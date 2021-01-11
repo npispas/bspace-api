@@ -34,9 +34,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth', 'json.response']], fun
         ->except(['create', 'edit'])
         ->names('users');
 
-    Route::resource('/roles', \App\Http\Controllers\Api\RoleController::class)
-        ->only('index')
-        ->names('roles');
+    Route::get('/roles', [\App\Http\Controllers\Api\RoleController::class, 'index'])
+        ->name('roles');
 
     Route::get('/permissions',[\App\Http\Controllers\Api\PermissionController::class, 'index'])
         ->name('permissions.index');
@@ -49,7 +48,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth', 'json.response']], fun
         ->names('reservations');
 
     Route::resource('/room_types', \App\Http\Controllers\Api\RoomTypeController::class)
-        ->except(['create', 'edit'])
+        ->only(['index', 'show'])
         ->names('room_types');
 
     Route::resource('/rooms', \App\Http\Controllers\Api\RoomController::class)
