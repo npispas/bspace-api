@@ -5,6 +5,8 @@
 
         <side-nav/>
 
+        <spinner/>
+
         <v-main>
             <router-view/>
         </v-main>
@@ -14,12 +16,13 @@
 </template>
 
 <script>
-import FooterSection from "./Sections/FooterSection";
-import SideNav from "./Navigation/SideNav";
-import ToolBar from "./Navigation/ToolBar";
+import FooterSection from "./Partials/FooterSection";
+import SideNav from "./Partials/SideNav";
+import ToolBar from "./Partials/ToolBar";
+import Spinner from "./Elements/Spinner";
 
 export default {
     name: "Root",
-    components: {ToolBar, FooterSection, SideNav},
+    components: {Spinner, ToolBar, FooterSection, SideNav},
 }
 </script>
