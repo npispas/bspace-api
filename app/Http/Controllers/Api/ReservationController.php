@@ -9,7 +9,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Log;
 
 class ReservationController extends Controller
 {
@@ -20,7 +19,7 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        return ReservationResource::collection(Reservation::all());
+        return ReservationResource::collection(Reservation::all()->load('roomStays.guests'));
     }
 
     /**
@@ -57,11 +56,28 @@ class ReservationController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param Reservation $reservation
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, Reservation $reservation)
     {
-        //
+        $this->validate($request, [
+            'start_date' => ['required', 'date'],
+            'start_hour' => ['required', 'date_format:H:i:s'],
+            'end_date' => ['required', 'date'],
+            'end_hour' => ['required', 'date_format:H:i:s'],
+            'room' => ['required', 'integer', 'min:1']
+        ]);
+
+        $roomStay = $reservation->roomStays()->firstOrFail();
+        $roomStay->start_date = $request->get('start_date');
+        $roomStay->start_hour = $request->get('start_hour');
+        $roomStay->end_date = $request->get('start_date');
+        $roomStay->end_hour = $request->get('start_hour');
+        $roomStay->rooms()->sync($request->get('room'));
+        $roomStay->save();
+
+        return response()->json([], Response::HTTP_OK);
     }
 
     /**

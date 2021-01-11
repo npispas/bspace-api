@@ -17,19 +17,25 @@
                 </v-list-item-icon>
                 <v-list-item-title>Overview</v-list-item-title>
             </v-list-item>
-            <v-list-item link to="/reservations">
+            <v-list-item link to="/calendar">
+                <v-list-item-icon>
+                    <v-icon :size="iconSize">mdi-calendar-month</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Calendar</v-list-item-title>
+            </v-list-item>
+            <v-list-item v-if="$can('view', 'Reservation')" link to="/reservations">
                 <v-list-item-icon>
                     <v-icon :size="iconSize">mdi-format-list-bulleted</v-icon>
                 </v-list-item-icon>
                 <v-list-item-title>Reservations</v-list-item-title>
             </v-list-item>
-            <v-list-item link to="/rooms">
+            <v-list-item v-if="$can('view', 'Room')" link to="/rooms">
                 <v-list-item-icon>
                     <v-icon :size="iconSize">mdi-office-building</v-icon>
                 </v-list-item-icon>
                 <v-list-item-title>Rooms</v-list-item-title>
             </v-list-item>
-            <v-list-item link to="/users">
+            <v-list-item v-if="$can('view', 'User')" link to="/users">
                 <v-list-item-icon>
                     <v-icon :size="iconSize">mdi-account-multiple</v-icon>
                 </v-list-item-icon>
@@ -56,11 +62,9 @@
 
 <script>
     import logoutMixin from "../../mixins/logoutMixin";
-    import FooterSection from "../Sections/FooterSection";
 
     export default {
         name: "SideNav",
-        components: {FooterSection},
         mixins: [logoutMixin],
 
         data () {
