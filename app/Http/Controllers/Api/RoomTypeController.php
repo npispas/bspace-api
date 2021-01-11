@@ -20,17 +20,6 @@ class RoomTypeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param RoomType $roomType
@@ -39,28 +28,5 @@ class RoomTypeController extends Controller
     public function show(RoomType $roomType)
     {
         return RoomTypeResource::make($roomType);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param RoomType $roomType
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, RoomType $roomType)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param RoomType $roomType
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(RoomType $roomType)
-    {
-        //
     }
 }
