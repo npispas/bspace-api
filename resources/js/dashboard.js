@@ -8,12 +8,14 @@ require('./bootstrap');
 
 import Vue from 'vue';
 
-import VueRouter from 'vue-router';
-import routes from './routes/dashboard-routes';
+import dashboardRouter from "./routes/dashboardRouter";
 
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 import '@mdi/font/css/materialdesignicons.css';
+
+import {abilitiesPlugin} from '@casl/vue';
+import ability from './services/abilityService'
 
 /**
  * The following block of code may be used to automatically register your
@@ -22,9 +24,6 @@ import '@mdi/font/css/materialdesignicons.css';
  *
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
-
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 // Application Root Vue Template
 Vue.component('root', require('./components/Root.vue').default);
@@ -35,17 +34,14 @@ Vue.component('root', require('./components/Root.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.use(VueRouter);
 Vue.use(Vuetify);
-
-const router = new VueRouter({
-    mode: 'history',
-    base: '/dashboard',
-    routes,
-});
+Vue.use(abilitiesPlugin, ability);
 
 new Vue({
     el: '#app',
-    router,
-    vuetify: new Vuetify()
+    router: dashboardRouter,
+    vuetify: new Vuetify(),
+    data: {
+        loading: false
+    }
 });

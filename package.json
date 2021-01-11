@@ -24,6 +24,8 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@casl/ability": "^5.1.2",
+        "@casl/vue": "^1.2.1",
         "@mdi/font": "^5.8.55",
         "install": "^0.13.0",
         "npm": "^6.14.10",
