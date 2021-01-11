@@ -24,9 +24,22 @@ Route::group(['prefix' => 'dashboard'], function () {
 
 Route::group(['prefix' => 'api', 'middleware' => ['auth', 'json.response']], function () {
 
+    Route::get('/statistics', \App\Http\Controllers\Api\StatisticController::class)
+        ->name('statistics');
+
+    Route::get('/auth/permissions', [\App\Http\Controllers\Auth\UserController::class, 'permissions'])
+        ->name('users.permissions');
+
     Route::resource('/users', \App\Http\Controllers\Api\UserController::class)
         ->except(['create', 'edit'])
         ->names('users');
+
+    Route::resource('/roles', \App\Http\Controllers\Api\RoleController::class)
+        ->only('index')
+        ->names('roles');
+
+    Route::get('/permissions',[\App\Http\Controllers\Api\PermissionController::class, 'index'])
+        ->name('permissions.index');
 
     Route::get('/reservations/generate', [\App\Http\Controllers\Api\ReservationController::class, 'generate'])
         ->name('reservations.generate');
