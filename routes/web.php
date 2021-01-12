@@ -34,8 +34,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth', 'json.response']], fun
     Route::get('/statistics', \App\Http\Controllers\Api\StatisticController::class)
         ->name('statistics');
 
-    Route::get('/auth/permissions', [\App\Http\Controllers\Auth\UserController::class, 'permissions'])
-        ->name('users.permissions');
+    Route::get('/auth/user', [\App\Http\Controllers\Auth\UserController::class, 'getAuthUser'])
+        ->name('auth.user');
 
     Route::resource('/users', \App\Http\Controllers\Api\UserController::class)
         ->except(['create', 'edit'])

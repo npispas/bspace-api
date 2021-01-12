@@ -9,14 +9,15 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     /**
-     * Get all permissions of the Authenticated users.
+     * Get the authenticated user with his permissions.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function permissions()
+    public function getAuthUser()
     {
-        $permissions = Auth::user()->getAllPermissions();
-
-        return PermissionResource::collection($permissions);
+        return response()->json([
+            'username' => Auth::user()->username,
+            'permissions' => PermissionResource::collection(Auth::user()->getAllPermissions())
+        ]);
     }
 }
