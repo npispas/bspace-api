@@ -97,7 +97,7 @@
         name: "Index",
         mixins: [spinnerMixin],
 
-        beforeRouteEnter (to, from, next) {
+        beforeRouteEnter(to, from, next) {
             ReservationService.fetchReservations().then((response) => {
                 next(vm => {
                     vm.reservations = response

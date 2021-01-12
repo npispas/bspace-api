@@ -117,7 +117,7 @@
         name: "Dashboard",
         mixins: [spinnerMixin],
 
-        beforeRouteEnter (to, from, next) {
+        beforeRouteEnter(to, from, next) {
             StatisticService.fetchStatistics().then((response) => {
                 next(vm => {
                     vm.reservationsCount = response.reservation_count

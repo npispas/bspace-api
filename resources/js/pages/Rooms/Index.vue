@@ -96,7 +96,7 @@ export default {
     name: "Index",
     mixins: [spinnerMixin],
 
-    beforeRouteEnter (to, from, next) {
+    beforeRouteEnter(to, from, next) {
         RoomService.fetchRooms().then((response) => {
             next(vm => {
                 vm.rooms = response

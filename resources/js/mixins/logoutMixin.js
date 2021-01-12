@@ -7,7 +7,7 @@ export default {
                     this.$router.history.teardown()
                     window.location.replace('/dashboard/login')
                 })
-                .catch( error =>{
+                .catch(error =>{
                     console.error(error.message)
                 })
         }

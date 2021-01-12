@@ -96,7 +96,7 @@ export default {
     name: "Edit",
     mixins: [spinnerMixin],
 
-    beforeRouteEnter (to, from, next) {
+    beforeRouteEnter(to, from, next) {
         UserService.fetchUser(to.params.userId).then((userResponse) => {
             PermissionService.fetchPermissions().then((permissionResponse) => {
                 next(vm => {

@@ -175,7 +175,7 @@ export default {
     name: "Create",
     mixins: [spinnerMixin],
 
-    beforeRouteEnter (to, from, next) {
+    beforeRouteEnter(to, from, next) {
         RoleService.fetchRoles(to.params.userId).then((roleResponse) => {
             PermissionService.fetchPermissions().then((permissionResponse) => {
                 next(vm => {

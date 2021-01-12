@@ -36,7 +36,7 @@ export default {
     components: {RoomAmenitiesCard, RoomImagesCarousel, RoomDescriptionCard, RoomDetailsCard},
     mixins: [spinnerMixin],
 
-    beforeRouteEnter (to, from, next) {
+    beforeRouteEnter(to, from, next) {
         RoomService.fetchRoom(to.params.roomId).then((response) => {
             next(vm => {
                 vm.room = response

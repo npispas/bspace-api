@@ -41,7 +41,7 @@ export default {
         }
     },
 
-    beforeRouteEnter (to, from, next) {
+    beforeRouteEnter(to, from, next) {
         ReservationService.fetchReservation(to.params.reservationId).then((response) => {
             next(vm => {
                 vm.reservation = response

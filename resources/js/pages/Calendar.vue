@@ -163,7 +163,7 @@ export default {
     name: "Calendar",
     mixins: [spinnerMixin],
 
-    beforeRouteEnter (to, from, next) {
+    beforeRouteEnter(to, from, next) {
         ReservationService.fetchReservations().then((response) => {
             next(vm => {
                 vm.loading = false

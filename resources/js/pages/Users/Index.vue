@@ -82,7 +82,7 @@ export default {
     name: "Index",
     mixins: [spinnerMixin],
 
-    beforeRouteEnter (to, from, next) {
+    beforeRouteEnter(to, from, next) {
         UserService.fetchUsers().then((response) => {
             next(vm => {
                 vm.users = response

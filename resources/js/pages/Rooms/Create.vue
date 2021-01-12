@@ -214,7 +214,7 @@ export default {
     name: "Create",
     mixins: [spinnerMixin],
 
-    beforeRouteEnter (to, from, next) {
+    beforeRouteEnter(to, from, next) {
         RoomTypeService.fetchRoomTypes().then((response) => {
             next(vm => {
                 vm.roomTypes = response

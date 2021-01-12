@@ -105,7 +105,7 @@ export default {
     components: {ReservationDetailsCard},
     mixins: [spinnerMixin],
 
-    beforeRouteEnter (to, from, next) {
+    beforeRouteEnter(to, from, next) {
         ReservationService.fetchReservation(to.params.reservationId).then((reservationResponse) => {
             RoomService.fetchRooms().then(roomResponse => {
                 next(vm => {
