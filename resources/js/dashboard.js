@@ -4,17 +4,17 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require('./bootstrap')
 
-import Vue from 'vue';
+import Vue from 'vue'
 
-import dashboardRouter from "./routes/dashboardRouter";
+import dashboardRouter from "./routes/dashboardRouter"
 
-import Vuetify from 'vuetify';
-import 'vuetify/dist/vuetify.min.css';
-import '@mdi/font/css/materialdesignicons.css';
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+import '@mdi/font/css/materialdesignicons.css'
 
-import {abilitiesPlugin} from '@casl/vue';
+import {abilitiesPlugin} from '@casl/vue'
 import ability from './services/abilityService'
 
 /**
@@ -26,7 +26,7 @@ import ability from './services/abilityService'
  */
 
 // Application Root Vue Template
-Vue.component('root', require('./components/Root.vue').default);
+Vue.component('root', require('./components/Root.vue').default)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -34,8 +34,8 @@ Vue.component('root', require('./components/Root.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.use(Vuetify);
-Vue.use(abilitiesPlugin, ability);
+Vue.use(Vuetify)
+Vue.use(abilitiesPlugin, ability)
 
 new Vue({
     el: '#app',
@@ -44,4 +44,4 @@ new Vue({
     data: {
         loading: false
     }
-});
+})

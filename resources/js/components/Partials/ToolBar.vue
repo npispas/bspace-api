@@ -22,7 +22,7 @@ export default {
     computed: {
         mini() {
             return this.$vuetify.breakpoint.mdAndDown;
-        },
+        }
     }
 }
 </script>

@@ -206,9 +206,9 @@
 </template>
 
 <script>
-import RoomService from "../../services/roomService";
-import RoomTypeService from "../../services/roomTypeService";
-import spinnerMixin from "../../mixins/spinnerMixin";
+import RoomService from "../../services/roomService"
+import RoomTypeService from "../../services/roomTypeService"
+import spinnerMixin from "../../mixins/spinnerMixin"
 
 export default {
     name: "Create",
@@ -292,8 +292,8 @@ export default {
                 && this.$refs.room_availability.validate()
                 && this.$refs.room_images.validate()) {
                 RoomService.createRoom(this.formData).then(() => {
-                    this.$router.push('/rooms');
-                });
+                    this.$router.push('/rooms')
+                })
             }
         }
     }

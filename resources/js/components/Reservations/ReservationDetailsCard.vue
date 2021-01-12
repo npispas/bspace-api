@@ -69,18 +69,18 @@ export default {
 
     watch: {
         reservation: function () {
-            this.loading = false;
+            this.loading = false
         }
     },
 
     methods: {
         getColor: function (status) {
             switch (status) {
-                case 'checked-in': return 'green--text';
-                case 'checked-out': return 'gray--text';
-                case 'confirmed': return 'blue--text';
-                case 'unconfirmed': return 'orange--text';
-                case 'canceled': return 'red--text';
+                case 'checked-in': return 'green--text'
+                case 'checked-out': return 'gray--text'
+                case 'confirmed': return 'blue--text'
+                case 'unconfirmed': return 'orange--text'
+                case 'canceled': return 'red--text'
             }
         },
     }

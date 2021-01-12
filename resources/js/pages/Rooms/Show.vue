@@ -24,12 +24,12 @@
 </template>
 
 <script>
-import RoomService from "../../services/roomService";
-import RoomDetailsCard from "../../components/Rooms/RoomDetailsCard";
-import RoomDescriptionCard from "../../components/Rooms/RoomDescriptionCard";
-import RoomImagesCarousel from "../../components/Rooms/RoomImagesCarousel";
-import RoomAmenitiesCard from "../../components/Rooms/RoomAmenitiesCard";
-import spinnerMixin from "../../mixins/spinnerMixin";
+import RoomService from "../../services/roomService"
+import RoomDetailsCard from "../../components/Rooms/RoomDetailsCard"
+import RoomDescriptionCard from "../../components/Rooms/RoomDescriptionCard"
+import RoomImagesCarousel from "../../components/Rooms/RoomImagesCarousel"
+import RoomAmenitiesCard from "../../components/Rooms/RoomAmenitiesCard"
+import spinnerMixin from "../../mixins/spinnerMixin"
 
 export default {
     name: "Show",

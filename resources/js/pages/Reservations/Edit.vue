@@ -94,11 +94,11 @@
 </template>
 
 <script>
-import spinnerMixin from "../../mixins/spinnerMixin";
-import ReservationService from "../../services/reservationService";
-import RoomService from "../../services/roomService";
+import spinnerMixin from "../../mixins/spinnerMixin"
+import ReservationService from "../../services/reservationService"
+import RoomService from "../../services/roomService"
 
-import ReservationDetailsCard from "../../components/Reservations/ReservationDetailsCard";
+import ReservationDetailsCard from "../../components/Reservations/ReservationDetailsCard"
 
 export default {
     name: "Edit",

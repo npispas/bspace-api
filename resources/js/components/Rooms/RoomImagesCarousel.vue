@@ -29,8 +29,8 @@ export default {
 
     watch: {
         room: function () {
-            this.loading = false;
+            this.loading = false
         }
-    },
+    }
 }
 </script>

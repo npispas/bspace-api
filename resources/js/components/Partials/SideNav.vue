@@ -61,7 +61,7 @@
 </template>
 
 <script>
-    import logoutMixin from "../../mixins/logoutMixin";
+    import logoutMixin from "../../mixins/logoutMixin"
 
     export default {
         name: "SideNav",
@@ -75,16 +75,16 @@
 
         computed: {
             mini() {
-                return this.$vuetify.breakpoint.mdAndDown;
+                return this.$vuetify.breakpoint.mdAndDown
             },
 
             iconSize() {
                 switch (this.$vuetify.breakpoint.name) {
-                    case "xl": return 'x-large';
-                    case "lg": return 'large';
-                    case "md": return 'medium';
-                    case "sm": return 'small';
-                    case "xs": return 'x-small';
+                    case "xl": return 'x-large'
+                    case "lg": return 'large'
+                    case "md": return 'medium'
+                    case "sm": return 'small'
+                    case "xs": return 'x-small'
                 }
             }
         }

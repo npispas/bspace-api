@@ -4,6 +4,6 @@
 
 <script>
 export default {
-    name: "ReservationsRoot",
+    name: "ReservationsRoot"
 }
 </script>

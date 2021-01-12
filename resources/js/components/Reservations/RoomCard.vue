@@ -83,8 +83,8 @@ export default {
 
     watch: {
         roomStays: function () {
-            this.loading = false;
+            this.loading = false
         }
-    },
+    }
 }
 </script>

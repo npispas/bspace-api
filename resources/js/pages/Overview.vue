@@ -111,7 +111,7 @@
 
 <script>
     import StatisticService from "../services/statisticService"
-    import spinnerMixin from "../mixins/spinnerMixin";
+    import spinnerMixin from "../mixins/spinnerMixin"
 
     export default {
         name: "Dashboard",

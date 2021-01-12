@@ -91,7 +91,7 @@
 
 <script>
     import ReservationService from "../../services/reservationService"
-    import spinnerMixin from "../../mixins/spinnerMixin";
+    import spinnerMixin from "../../mixins/spinnerMixin"
 
     export default {
         name: "Index",

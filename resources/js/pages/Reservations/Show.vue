@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import ReservationDetailsCard from "../../components/Reservations/ReservationDetailsCard";
-import GuestCard from "../../components/Reservations/GuestCard";
-import RoomCard from "../../components/Reservations/RoomCard";
-import spinnerMixin from "../../mixins/spinnerMixin";
+import ReservationDetailsCard from "../../components/Reservations/ReservationDetailsCard"
+import GuestCard from "../../components/Reservations/GuestCard"
+import RoomCard from "../../components/Reservations/RoomCard"
+import spinnerMixin from "../../mixins/spinnerMixin"
 
-import ReservationService from "../../services/reservationService";
+import ReservationService from "../../services/reservationService"
 
 export default {
     name: "Show",
@@ -47,8 +47,8 @@ export default {
                 vm.reservation = response
                 vm.roomStays = vm.reservation.room_stays[0]
                 vm.room = vm.roomStays.rooms[0]
-            });
-        });
-    },
+            })
+        })
+    }
 }
 </script>

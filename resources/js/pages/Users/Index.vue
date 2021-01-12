@@ -75,8 +75,8 @@
 </template>
 
 <script>
-import spinnerMixin from "../../mixins/spinnerMixin";
-import UserService from "../../services/userService";
+import spinnerMixin from "../../mixins/spinnerMixin"
+import UserService from "../../services/userService"
 
 export default {
     name: "Index",
@@ -109,7 +109,7 @@ export default {
 
     watch: {
         users() {
-            this.loading = false;
+            this.loading = false
         },
         dialog (val) {
             val || this.close()
@@ -122,19 +122,19 @@ export default {
     methods: {
         getColor: function (status) {
             switch (status) {
-                case 'admin': return 'blue';
-                case 'staff': return 'blue';
-                case 'user': return 'gray';
+                case 'admin': return 'blue'
+                case 'staff': return 'blue'
+                case 'user': return 'gray'
             }
         },
 
         closeDelete () {
-            this.dialogDelete = false;
+            this.dialogDelete = false
         },
 
         deleteItem (item) {
-            this.editedIndex = item;
-            this.dialogDelete = true;
+            this.editedIndex = item
+            this.dialogDelete = true
         },
 
         deleteItemConfirm () {

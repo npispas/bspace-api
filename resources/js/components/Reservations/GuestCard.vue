@@ -73,15 +73,15 @@ export default {
 
     watch: {
         guests: function () {
-            this.loading = false;
+            this.loading = false
         }
     },
 
     methods: {
         getColor: function (status) {
             switch (status) {
-                case 'arrived': return 'green--text';
-                case 'pending': return 'red--text';
+                case 'arrived': return 'green--text'
+                case 'pending': return 'red--text'
             }
         },
     }
