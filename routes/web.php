@@ -15,11 +15,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'dashboard'], function () {
 
-    Auth::routes();
+    Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])
+        ->middleware('guest')
+        ->name('login');
 
-    Route::get('/{component?}/{foo?}/{bar?}', \App\Http\Controllers\Web\DashboardController::class)
-        ->middleware('auth')
-        ->name('dashboard');
+    Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])
+        ->middleware('guest');
+
+    Route::post('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout']);
+
+    Route::get('/{any?}', \App\Http\Controllers\Web\DashboardController::class)
+        ->where('any', '.*')
+        ->middleware('auth');
 });
 
 Route::group(['prefix' => 'api', 'middleware' => ['auth', 'json.response']], function () {
