@@ -1,7 +1,7 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
 import ability from '../services/abilityService'
-import PermissionService from "../services/permissionService"
+import AuthService from "../services/authService"
 
 // Define route components.
 import Overview from "../pages/Overview"
@@ -171,10 +171,15 @@ router.beforeEach((to, from, next) => {
         next()
     } else {
         router.app.loading = true;
-        PermissionService.fetchAuthUserPermissions().then((response) => {
-            ability.update(response)
-            next()
-        })
+        AuthService.fetchAuthUser()
+            .then((response) => {
+                if (response !== undefined) {
+                    ability.update(response.permissions)
+                    next()
+                } else {
+                    location.replace('/dashboard/login')
+                }
+            })
     }
 })
 
