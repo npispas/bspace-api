@@ -235,7 +235,7 @@ export default {
                 maxOccupancy: null,
                 availableFrom: '',
                 availableTo: '',
-                isPublished: false,
+                isPublished: 0,
                 description: '',
                 images: null,
             },
@@ -287,6 +287,7 @@ export default {
 
     methods: {
         saveRoom() {
+            console.log(this.formData)
             if (this.$refs.room_type.validate()
                 && this.$refs.room_details.validate()
                 && this.$refs.room_description.validate()
