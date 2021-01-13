@@ -31,7 +31,7 @@
                         </v-row>
                         <v-row>
                             <v-col>
-                                <v-icon small>mdi-phone</v-icon>
+                                <v-icon small>mdi-pot-steam</v-icon>
                                 <span class="text-md-subtitle-2">Kitchen</span>
                             </v-col>
                         </v-row>
@@ -39,7 +39,7 @@
                     <v-col>
                         <v-row>
                             <v-col>
-                                <v-icon small>mdi-pot-steam</v-icon>
+                                <v-icon small>mdi-phone</v-icon>
                                 <span class="text-md-subtitle-2">Phone</span>
                             </v-col>
                         </v-row>

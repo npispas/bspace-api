@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 
 /**
  * Class Room represents all the rooms available in the system.
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $available_from
  * @property $available_to
  * @property $is_published
+ * @property $images
  * @property $location
  * @property $created_at
  * @property $updated_at
@@ -38,13 +40,13 @@ class Room extends Model
     }
 
     /**
-     * Relationship with the RoomImage model
+     * Relationship with the Image model
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function roomImages()
+    public function images()
     {
-        return $this->hasMany(RoomImage::class);
+        return $this->morphMany(Image::class, 'imageable');
     }
 
     /**
@@ -55,5 +57,19 @@ class Room extends Model
     public function roomStays()
     {
         return $this->belongsToMany(RoomStay::class)->withTimestamps();
+    }
+
+    /**
+     * Store room's images.
+     *
+     * @param UploadedFile $uploadedFile
+     */
+    public function storeImages(UploadedFile $uploadedFile) {
+        $path = $uploadedFile->store('uploads', 'public');
+
+        $roomImage = new Image();
+        $roomImage->url = "/$path";
+
+        $this->images()->save($roomImage);
     }
 }

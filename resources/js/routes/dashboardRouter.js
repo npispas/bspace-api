@@ -143,7 +143,7 @@ const router =  new VueRouter({
                     path: ':userId/edit',
                     component: UserEdit,
                     beforeEnter(to, from , next) {
-                        if (ability.can('view', 'User')) {
+                        if (ability.can('edit', 'User')) {
                             next()
                         } else {
                             next('/users')

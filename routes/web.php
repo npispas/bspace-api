@@ -58,8 +58,11 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth', 'json.response']], fun
         ->only(['index', 'show'])
         ->names('room_types');
 
+    Route::post('/rooms/{room}/image', [\App\Http\Controllers\Api\RoomController::class, 'storeImage'])
+        ->name('rooms.image.store');
+
     Route::resource('/rooms', \App\Http\Controllers\Api\RoomController::class)
         ->except(['create', 'edit'])
-        ->names('room_types');
+        ->names('rooms');
 
 });

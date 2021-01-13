@@ -45,7 +45,22 @@
                         </v-dialog>
                     </v-toolbar>
                 </template>
+                <template v-slot:item.room_type="{ item }">
+                    {{ item.room_type.name }}
+                </template>
 
+                <template v-slot:item.occupancy="{ item }">
+                    {{ `${item.min_occupancy} - ${item.max_occupancy}` }}
+                </template>
+
+                <template v-slot:item.is_published="{ item }">
+                    <v-chip
+                        :color="getColor(item.is_published)"
+                        dark
+                    >
+                        {{ item.is_published ? 'Yes' : 'No' }}
+                    </v-chip>
+                </template>
                 <template v-slot:item.actions="{ item }">
                     <v-icon
                         v-if="$can('edit', 'Room')"
@@ -69,19 +84,6 @@
                     >
                         mdi-delete
                     </v-icon>
-                </template>
-
-                <template v-slot:item.occupancy="{ item }">
-                    {{ `${item.min_occupancy} - ${item.max_occupancy}` }}
-                </template>
-
-                <template v-slot:item.is_published="{ item }">
-                    <v-chip
-                        :color="getColor(item.is_published)"
-                        dark
-                    >
-                        {{ item.is_published ? 'Yes' : 'No' }}
-                    </v-chip>
                 </template>
             </v-data-table>
         </v-card>
@@ -110,8 +112,8 @@ export default {
             dialog: false,
             dialogDelete: false,
             headers: [
-                { text: 'Room ID', align: 'start', value: 'unique_id' },
-                { text: 'Name', value: 'name' },
+                { text: 'Name', value: 'name', align: 'start' },
+                { text: 'Room Type', value: 'room_type' },
                 { text: 'Interior (Sq.M)', value: 'interior_size' },
                 { text: 'Occupancy', value: 'occupancy', sortable: false },
                 { text: 'Available From', value: 'available_from', sortable: false },

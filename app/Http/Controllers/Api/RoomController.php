@@ -20,7 +20,7 @@ class RoomController extends Controller
      */
     public function index()
     {
-        return RoomResource::collection(Room::all()->load('roomImages'));
+        return RoomResource::collection(Room::all()->load('images', 'roomType'));
     }
 
     /**
@@ -41,9 +41,8 @@ class RoomController extends Controller
             'available_from' => ['required', 'date'],
             'available_to' => ['required', 'date'],
             'room_type_id' => ['required', 'integer'],
-            'is_published' => ['required', 'boolean'],
-            'description' => ['required', 'string', 'max:191'],
-            'images' => ['required', 'array'],
+            'is_published' => ['required', 'integer', 'min:0', 'max:1'],
+            'description' => ['required', 'string', 'max:191']
         ]);
 
         $room = new Room();
@@ -61,7 +60,24 @@ class RoomController extends Controller
         $roomType = RoomType::findOrFail($request->get('room_type_id'));
         $roomType->rooms()->save($room);
 
-        // Todo Store Room Images
+        return response()->json(RoomResource::make($room), Response::HTTP_CREATED);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @param Room $room
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function storeImage(Request $request, Room $room)
+    {
+        $this->validate($request, [
+            'image' => ['required', 'mimes:jpg,bmp,png']
+        ]);
+
+        $room->storeImages($request->file('image'));
 
         return response()->json('', Response::HTTP_CREATED);
     }
@@ -74,7 +90,7 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        return RoomResource::make($room->load('roomImages', 'roomType'));
+        return RoomResource::make($room->load('images', 'roomType'));
     }
 
     /**

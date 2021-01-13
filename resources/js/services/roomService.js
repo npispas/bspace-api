@@ -5,7 +5,7 @@ class RoomService {
         return await axios.get('api/rooms')
             .then(response => {
                 return response.data.data
-            }).catch( error => {
+            }).catch(error => {
                 console.error(error.message)
             })
     }
@@ -14,16 +14,16 @@ class RoomService {
         return await axios.delete(`api/rooms/${roomId}`)
             .then(response => {
                 return response.data.data
-            }).catch( error => {
+            }).catch(error => {
                 console.error(error.message)
             })
     }
 
      async fetchRoom(roomId) {
         return await axios.get(`api/rooms/${roomId}`)
-            .then( response => {
+            .then(response => {
                 return response.data.data
-            }).catch( error => {
+            }).catch(error => {
                 console.error(error.message)
             })
     }
@@ -43,8 +43,27 @@ class RoomService {
             images: data.images
         })
             .then( response => {
+                return response.data
+            }).catch(error => {
+                console.error(error.message)
+            })
+    }
+
+    async uploadImages(roomId, image) {
+
+        let formData = new FormData
+        formData.append('image', image)
+
+        let conf = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+
+        return await axios.post(`api/rooms/${roomId}/image`, formData, conf)
+            .then( response => {
                 return response.data.data
-            }).catch( error => {
+            }).catch(error => {
                 console.error(error.message)
             })
     }
