@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::where('id', '!=', Auth::user()->id)->get()->load('permissions');
+        $users = User::where('id', '!=', Auth::user()->id)->get()->load('permissions', 'image');
 
         return UserResource::collection($users);
     }
@@ -33,7 +33,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return UserResource::make($user->load('permissions'));
+        return UserResource::make($user->load('permissions', 'image'));
     }
 
     /**

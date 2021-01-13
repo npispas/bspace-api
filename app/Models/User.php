@@ -21,6 +21,7 @@ use Illuminate\Notifications\Notifiable;
  * @property $password
  * @property $remember_token
  * @property $role_id
+ * @property $image
  * @property $created_at
  * @property $updated_at
  */
@@ -64,6 +65,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Relationship with the Image model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
 
     /**
      * full_name accessor which calculates the user's full name.

@@ -3,10 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Guest;
-use App\Models\GuestImage;
 use App\Models\Reservation;
 use App\Models\Room;
-use App\Models\RoomImage;
+use App\Models\Image;
 use App\Models\RoomStay;
 use App\Models\RoomType;
 use Illuminate\Database\Seeder;
@@ -26,8 +25,12 @@ class ReservationSeeder extends Seeder
             ->for($roomType)
             ->create();
 
-        RoomImage::factory()
-            ->for($room)
+        Image::factory()
+            ->for($room, 'imageable')
+            ->create();
+
+        Image::factory()
+            ->for($room, 'imageable')
             ->create();
 
         $reservation = Reservation::factory()->create();
@@ -50,12 +53,12 @@ class ReservationSeeder extends Seeder
             ->for($roomStay)
             ->create();
 
-        GuestImage::factory()
-            ->for($guest)
+        Image::factory()
+            ->for($guest, 'imageable')
             ->create();
 
-        GuestImage::factory()
-            ->for($guest2)
+        Image::factory()
+            ->for($guest2, 'imageable')
             ->create();
     }
 }

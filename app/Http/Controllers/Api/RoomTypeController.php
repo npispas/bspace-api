@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\RoomType;
 use App\Http\Resources\RoomType as RoomTypeResource;
-use Illuminate\Http\Request;
 
 class RoomTypeController extends Controller
 {

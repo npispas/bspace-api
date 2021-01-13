@@ -17,6 +17,7 @@ class UserController extends Controller
     {
         return response()->json([
             'username' => Auth::user()->username,
+            'image' => Auth::user()->image ?? null,
             'permissions' => PermissionResource::collection(Auth::user()->getAllPermissions())
         ]);
     }

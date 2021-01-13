@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $first_name
  * @property $last_name
  * @property $email
+ * @property $image
  * @property $created_at
  * @property $updated_at
  */
@@ -48,13 +49,13 @@ class Guest extends Model
     }
 
     /**
-     * Relationship with the GuestImage model
+     * Relationship with the Image model
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function guestImage()
+    public function image()
     {
-        return $this->hasOne(GuestImage::class);
+        return $this->morphOne(Image::class, 'imageable');
     }
 
     /**

@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Model;
  * Related models are Users, Rooms and Guest.
  *
  * @package App\Models
+ * @property $id
+ * @property $url
+ * @property $created_at
+ * @property $updated_at
  */
 class Image extends Model
 {

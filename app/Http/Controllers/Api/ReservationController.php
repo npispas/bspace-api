@@ -45,9 +45,9 @@ class ReservationController extends Controller
             'roomStays',
             'roomStays.rooms',
             'roomStays.rooms.roomType',
-            'roomStays.rooms.roomImages',
+            'roomStays.rooms.images',
             'roomStays.guests',
-            'roomStays.guests.guestImage'
+            'roomStays.guests.image'
         ));
     }
 
