@@ -15,10 +15,15 @@
                     class="ma-5"
                 >
                     <v-img
-                        src="../../../images/guest-img-1.jpg"
+                        v-if="guest.image"
+                        :src="guest.image.url"
                         max-height="250"
                     ></v-img>
-
+                    <v-img
+                        v-else
+                        :src="'/images/guest-img.jpg'"
+                        max-height="250"
+                    ></v-img>
                     <v-card-text class="pb-0 subtitle-2">
                         <v-row no-gutters>
                             <v-col cols="12">

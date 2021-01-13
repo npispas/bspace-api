@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RoomImage extends JsonResource
+class Image extends JsonResource
 {
     /**
      * Transform the resource into an array.

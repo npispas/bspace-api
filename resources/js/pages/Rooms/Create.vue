@@ -33,7 +33,6 @@
                                 item-text="name"
                                 item-value="id"
                                 required
-                                clearable
                             >
                             </v-select>
                         </v-col>
@@ -54,7 +53,7 @@
                         <v-col>
                             <v-text-field
                                 v-model="formData.name"
-                                :counter="10"
+                                :counter="20"
                                 label="Room name"
                                 :rules="rules.name"
                                 required
@@ -63,7 +62,7 @@
                         <v-col>
                             <v-text-field
                                 v-model="formData.location"
-                                :counter="10"
+                                :counter="20"
                                 label="Location"
                                 :rules="rules.location"
                                 required
@@ -156,6 +155,8 @@
                         </v-col>
                         <v-col>
                             <v-switch
+                                :false-value="0"
+                                :true-value="1"
                                 v-model="formData.isPublished"
                                 label="Room published"
                                 required
@@ -245,11 +246,11 @@ export default {
                 ],
                 name: [
                     v => !!v || 'Room Name is required',
-                    v => v.length < 10 || 'Room Name must be less than 10 characters'
+                    v => v.length < 20 || 'Room Name must be less than 10 characters'
                 ],
                 location: [
                     v => !!v || 'Location is required',
-                    v => v.length < 10 || 'Room Name must be less than 10 characters'
+                    v => v.length < 20 || 'Room Name must be less than 10 characters'
                 ],
                 interiorSize: [
                     v => !!v || 'Interior Size is required',
@@ -291,7 +292,10 @@ export default {
                 && this.$refs.room_description.validate()
                 && this.$refs.room_availability.validate()
                 && this.$refs.room_images.validate()) {
-                RoomService.createRoom(this.formData).then(() => {
+                RoomService.createRoom(this.formData).then((response) => {
+                    for (let i = 0; i < this.formData.images.length; i++) {
+                        RoomService.uploadImages(response.id, this.formData.images[i])
+                    }
                     this.$router.push('/rooms')
                 })
             }

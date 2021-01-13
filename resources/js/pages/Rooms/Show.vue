@@ -9,7 +9,7 @@
         />
 
         <room-images-carousel
-            :room="room"
+            :roomImages="roomImages"
         />
 
         <room-description-card
@@ -41,6 +41,7 @@ export default {
             next(vm => {
                 vm.room = response
                 vm.roomType = vm.room.room_type
+                vm.roomImages = vm.room.images
             })
         })
     },
@@ -48,7 +49,8 @@ export default {
     data() {
         return {
             room: {},
-            roomType: {}
+            roomType: {},
+            roomImages: []
         }
     }
 }

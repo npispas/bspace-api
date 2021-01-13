@@ -14,9 +14,16 @@
                         hide-delimiters
                         height="auto"
                     >
-                        <v-carousel-item src="../../../images/listing-img-1.jpg"></v-carousel-item>
-                        <v-carousel-item src="../../../images/listing-img-2.jpg"></v-carousel-item>
-                        <v-carousel-item src="../../../images/listing-img-3.jpg"></v-carousel-item>
+                        <v-carousel-item v-for="image in room.images" :key="image.id" :src="image.url"></v-carousel-item>
+                    </v-carousel>
+                    <v-carousel
+                        cycle
+                        :show-arrows="true"
+                        hide-delimiter-background
+                        hide-delimiters
+                        height="auto"
+                    >
+                        <v-carousel-item :src="'/images/room-listing-img.jpg'"></v-carousel-item>
                     </v-carousel>
                 </v-col>
                 <v-col md="8" lg="8">

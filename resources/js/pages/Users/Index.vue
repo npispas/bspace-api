@@ -65,7 +65,8 @@
                 </template>
                 <template v-slot:item.username="{ item }">
                     <v-avatar size="36px">
-                        <v-img src="../../../images/avatar-1.jpg" />
+                        <v-img v-if="item.image" :src="item.image.url" />
+                        <v-icon large v-else>mdi-account-circle</v-icon>
                     </v-avatar>
                         {{ item.username }}
                 </template>

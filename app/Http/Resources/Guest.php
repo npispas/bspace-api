@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\GuestImage as GuestImageResource;
+use App\Http\Resources\Image as ImageResource;
 
 class Guest extends JsonResource
 {
@@ -24,7 +24,7 @@ class Guest extends JsonResource
             'nationality' => $this->nationality,
             'phone' => $this->phone,
             'address' => $this->address,
-            'guest_image' => GuestImageResource::make($this->whenLoaded('guestImage')),
+            'image' => ImageResource::make($this->whenLoaded('image')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

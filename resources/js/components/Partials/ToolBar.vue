@@ -10,7 +10,8 @@
         <v-toolbar-title class="text-subtitle-1">{{ username }}</v-toolbar-title>
         <v-btn icon>
             <v-avatar size="36px">
-                <v-img src="../../../images/avatar-1.jpg"></v-img>
+                <v-img v-if="image" :src="image.url"></v-img>
+                <v-icon large v-else>mdi-account-circle</v-icon>
             </v-avatar>
         </v-btn>
     </v-app-bar>
@@ -22,15 +23,17 @@ import AuthService from "../../services/authService";
 export default {
     name: "ToolBar",
 
-    created() {
+    beforeCreate() {
         AuthService.fetchAuthUser().then(response => {
             this.username = response.username
+            this.image = response.image
         })
     },
 
     data() {
         return {
-            username: ''
+            username: '',
+            image: null
         }
     },
 
