@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 
@@ -84,5 +86,25 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return sprintf('%s %s', $this->first_name, $this->last_name);
+    }
+
+    /**
+     * Save an image to the disk storage for a specific model.
+     *
+     * @param UploadedFile $uploadedFile
+     */
+    public function saveImage(UploadedFile $uploadedFile) {
+
+        if ($this->image) {
+            Storage::disk('public')->delete($this->image->url);
+            $this->image()->delete();
+        }
+
+        $path = $uploadedFile->store('uploads', 'public');
+
+        $roomImage = new Image();
+        $roomImage->url = "/$path";
+
+        $this->image()->save($roomImage);
     }
 }

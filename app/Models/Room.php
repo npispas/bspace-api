@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class Room represents all the rooms available in the system.
@@ -60,16 +62,28 @@ class Room extends Model
     }
 
     /**
-     * Store room's images.
+     * Save an image to the disk storage for a specific model.
      *
      * @param UploadedFile $uploadedFile
      */
-    public function storeImages(UploadedFile $uploadedFile) {
+    public function saveImage(UploadedFile $uploadedFile) {
         $path = $uploadedFile->store('uploads', 'public');
 
         $roomImage = new Image();
         $roomImage->url = "/$path";
 
         $this->images()->save($roomImage);
+    }
+
+    /**
+     * Delete image stored image.
+     *
+     * @param Image $image
+     * @throws Exception
+     */
+    public function deleteImage(Image $image) {
+        Storage::disk('public')->delete($image->url);
+
+        $image->delete();
     }
 }

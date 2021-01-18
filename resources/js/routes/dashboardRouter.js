@@ -6,6 +6,7 @@ import AuthService from "../services/authService"
 // Define route components.
 import Overview from "../pages/Overview"
 import Calendar from "../pages/Calendar"
+import Settings from "../pages/Settings"
 import Error404 from "../pages/Errors/Error404"
 import ReservationsRoot from "../components/ReservationsRoot"
 import ReservationsIndex from "../pages/Reservations/Index"
@@ -14,6 +15,7 @@ import ReservationsEdit from "../pages/Reservations/Edit"
 import RoomsRoot from "../components/RoomsRoot"
 import RoomsIndex from "../pages/Rooms/Index"
 import RoomsShow from "../pages/Rooms/Show"
+import RoomsEdit from "../pages/Rooms/Edit"
 import RoomsCreate from "../pages/Rooms/Create"
 import UserRoot from "../components/UsersRoot"
 import UserIndex from "../pages/Users/Index"
@@ -110,6 +112,17 @@ const router =  new VueRouter({
                             next('/rooms')
                         }
                     },
+                },
+                {
+                    path: ':roomId/edit',
+                    component: RoomsEdit,
+                    beforeEnter(to, from , next) {
+                        if (ability.can('edit', 'Room')) {
+                            next()
+                        } else {
+                            next('/rooms')
+                        }
+                    },
                 }
             ],
             beforeEnter(to, from , next) {
@@ -160,6 +173,10 @@ const router =  new VueRouter({
             },
         },
         {
+            path: '/settings',
+            component: Settings
+        },
+        {
             path: '*',
             component: Error404
         },
@@ -174,6 +191,7 @@ router.beforeEach((to, from, next) => {
         AuthService.fetchAuthUser()
             .then((response) => {
                 if (response !== undefined) {
+                    router.app.authUser = response.user
                     ability.update(response.permissions)
                     next()
                 } else {

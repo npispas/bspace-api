@@ -4,7 +4,7 @@
             flat
         >
             <v-img
-                src="../../../images/error-img.png"
+                src="/images/error-img.png"
                 class="white--text align-end"
             >
             </v-img>

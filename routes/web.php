@@ -34,6 +34,9 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth', 'json.response']], fun
     Route::get('/statistics', \App\Http\Controllers\Api\StatisticController::class)
         ->name('statistics');
 
+    Route::post('/auth/user/image', [\App\Http\Controllers\Auth\UserController::class, 'storeImage'])
+        ->name('auth.user.image.store');
+
     Route::get('/auth/user', [\App\Http\Controllers\Auth\UserController::class, 'getAuthUser'])
         ->name('auth.user');
 
@@ -60,6 +63,9 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth', 'json.response']], fun
 
     Route::post('/rooms/{room}/image', [\App\Http\Controllers\Api\RoomController::class, 'storeImage'])
         ->name('rooms.image.store');
+
+    Route::delete('/rooms/{room}/image/{image}', [\App\Http\Controllers\Api\RoomController::class, 'deleteImage'])
+        ->name('rooms.image.delete');
 
     Route::resource('/rooms', \App\Http\Controllers\Api\RoomController::class)
         ->except(['create', 'edit'])
