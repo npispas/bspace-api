@@ -96,11 +96,10 @@
                             v-model="selectedOpen"
                             :close-on-content-click="false"
                             :activator="selectedElement"
-                            offset-x
+                            offset-y
                         >
                             <v-card
-                                color="grey lighten-4"
-                                min-width="350px"
+                                :color="`${selectedEvent.color} lighten-5`"
                                 flat
                             >
                                 <v-toolbar
@@ -111,34 +110,45 @@
                                 </v-toolbar>
                                 <v-card-text>
                                     <v-row>
-                                        <v-col>
-                                            <v-icon small>mdi-office-building-outline</v-icon>
-                                            <span> {{ selectedEvent.room }}</span>
+                                        <v-col cols="12" sm="8" md="6" xl="3">
+                                            <span><strong>{{ selectedEvent.reservationId }}</strong></span>
+                                            <br>
+                                            <span class="subtitle-2">Reservation</span>
                                         </v-col>
-                                        <v-col>
-                                            <v-icon small>mdi-percent</v-icon>
-                                            <span> {{ selectedEvent.occupancy }}</span>
+                                        <v-col cols="12" sm="8" md="6" xl="3">
+                                            <span><strong>{{ `${selectedEvent.occupancy}%` }}</strong></span>
+                                            <br>
+                                            <span class="subtitle-2">Occupancy</span>
                                         </v-col>
-                                    </v-row>
-                                    <v-row v-for="guest in selectedEvent.guests" :key="guest.id">
-                                        <v-col>
-                                            <v-icon small>mdi-account</v-icon>
-                                            <span> {{ `${guest.full_name} (Arrived)` }}</span>
+                                        <v-col cols="12" sm="8" md="6" xl="3">
+                                            <span><strong>{{ selectedEvent.room }}</strong></span>
+                                            <br>
+                                            <span class="subtitle-2">Room</span>
+                                        </v-col>
+                                        <v-col cols="12" sm="8" md="6" xl="3">
+                                            <span><strong>{{ `${selectedEvent.start} / ${selectedEvent.end}` }}</strong></span>
+                                            <br>
+                                            <span class="subtitle-2">Arrival/Departure Date</span>
+                                        </v-col>
+                                        <v-col cols="12" sm="12" md="6" xl="3" v-for="guest in selectedEvent.guests" :key="guest.id">
+                                            <span><strong>{{ `${guest.full_name} (${guest.status})`}}</strong> </span>
+                                            <br>
+                                            <span class="subtitle-2">Guest</span>
                                         </v-col>
                                     </v-row>
                                 </v-card-text>
                                 <v-card-actions>
                                     <v-btn
+                                        outlined
                                         text
                                         color="secondary"
                                         @click="selectedOpen = false"
                                     >
                                         Dismiss
                                     </v-btn>
-
                                     <v-spacer></v-spacer>
-
                                     <v-btn
+                                        outlined
                                         text
                                         color="secondary"
                                         :to="`/reservations/${selectedEvent.id}`"
@@ -186,7 +196,7 @@ export default {
         selectedElement: null,
         selectedOpen: false,
         events: [],
-        colors: ['green', 'blue', 'red', 'orange', 'gray'],
+        colors: ['green', 'blue', 'red', 'orange', 'grey'],
         names: ['checked-in', 'confirmed', 'canceled', 'unconfirmed', 'checked-out'],
     }),
 
@@ -236,9 +246,10 @@ export default {
             for (let i = 0; i < this.reservations.length; i++) {
                 events.push({
                     id: this.reservations[i].id,
-                    name: `#${this.reservations[i].unique_id} - ${this.reservations[i].owner_name}`,
-                    start: new Date(`${this.reservations[i].room_stays[0].start_date}T${this.reservations[i].room_stays[0].start_hour}`),
-                    end: new Date(`${this.reservations[i].room_stays[0].end_date}T${this.reservations[i].room_stays[0].end_hour}`),
+                    reservationId:  this.reservations[i].unique_id,
+                    name: `${this.reservations[i].owner_name} (${this.reservations[i].status})`,
+                    start: `${this.reservations[i].room_stays[0].start_date} ${this.reservations[i].room_stays[0].start_hour}`,
+                    end: `${this.reservations[i].room_stays[0].end_date} ${this.reservations[i].room_stays[0].end_hour}`,
                     color: this.colors[this.names.indexOf(this.reservations[i].status)],
                     timed: true,
                     room: this.reservations[i].room_stays[0].rooms[0].name,
