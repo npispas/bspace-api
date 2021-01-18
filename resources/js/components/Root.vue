@@ -1,7 +1,9 @@
 <template>
     <v-app id="inspire" app>
-
-        <tool-bar/>
+        <tool-bar v-if="this.$root.$data.authUser"
+            :username="this.$root.$data.authUser.username"
+            :avatar="this.$root.$data.authUser.image"
+        />
 
         <side-nav/>
 
@@ -23,6 +25,6 @@ import Spinner from "./Elements/Spinner"
 
 export default {
     name: "Root",
-    components: {Spinner, ToolBar, FooterSection, SideNav}
+    components: {Spinner, ToolBar, FooterSection, SideNav},
 }
 </script>

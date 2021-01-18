@@ -25,7 +25,6 @@ import ability from './services/abilityService'
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// Application Root Vue Template
 Vue.component('root', require('./components/Root.vue').default)
 
 /**
@@ -42,6 +41,7 @@ new Vue({
     router: dashboardRouter,
     vuetify: new Vuetify(),
     data: {
+        authUser: null,
         loading: false
     }
 })
