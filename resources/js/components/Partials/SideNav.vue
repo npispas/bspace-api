@@ -13,7 +13,7 @@
         >
             <v-list-item link to="/overview">
                 <v-list-item-icon>
-                    <v-icon :size="iconSize">mdi-view-dashboard</v-icon>
+                    <v-icon :size="iconSize">mdi-view-dashboard-outline</v-icon>
                 </v-list-item-icon>
                 <v-list-item-title>Overview</v-list-item-title>
             </v-list-item>
@@ -31,19 +31,19 @@
             </v-list-item>
             <v-list-item v-if="$can('view', 'Room')" link to="/rooms">
                 <v-list-item-icon>
-                    <v-icon :size="iconSize">mdi-office-building</v-icon>
+                    <v-icon :size="iconSize">mdi-office-building-outline</v-icon>
                 </v-list-item-icon>
                 <v-list-item-title>Rooms</v-list-item-title>
             </v-list-item>
             <v-list-item v-if="$can('view', 'User')" link to="/users">
                 <v-list-item-icon>
-                    <v-icon :size="iconSize">mdi-account-multiple</v-icon>
+                    <v-icon :size="iconSize">mdi-account-multiple-outline</v-icon>
                 </v-list-item-icon>
                 <v-list-item-title>Users</v-list-item-title>
             </v-list-item>
             <v-list-item link to="/settings">
                 <v-list-item-icon>
-                    <v-icon :size="iconSize">mdi-cog</v-icon>
+                    <v-icon :size="iconSize">mdi-account-cog-outline</v-icon>
                 </v-list-item-icon>
                 <v-list-item-title>Settings</v-list-item-title>
             </v-list-item>

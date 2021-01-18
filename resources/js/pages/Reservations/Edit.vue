@@ -148,7 +148,6 @@ export default {
 
     methods: {
         updateReservation() {
-            console.log(this.formData)
             ReservationService.updateReservation(this.$route.params.reservationId, this.formData).then(() => {
                 this.$router.push('/reservations')
             })

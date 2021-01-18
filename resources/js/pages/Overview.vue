@@ -98,7 +98,7 @@
                     <v-sparkline
                         :padding="16"
                         :smooth="false"
-                        color="indigo accent-4"
+                        color="grey lightness-4"
                         line-width="0.5"
                         :value="values"
                         :labels="labels"
