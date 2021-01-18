@@ -6,7 +6,7 @@
             elevation="10"
         >
             <v-card-title>
-                <span>Room <strong>{{ room.unique_id }}</strong> Details</span>
+                <span>Room <strong>{{ room.name }}</strong> Details</span>
                 <v-spacer></v-spacer>
                 <v-btn
                     fab
@@ -14,9 +14,20 @@
                     x-small
                     :retain-focus-on-click="false"
                     class="indigo accent-4"
-                    v-on:click.native="$router.push('/rooms')"
+                    v-on:click.native="$router.go(-1)"
                 >
                     <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
+                <v-btn
+                    v-if="$can('edit', 'Room')"
+                    fab
+                    dark
+                    x-small
+                    :retain-focus-on-click="false"
+                    class="indigo accent-4 ml-1"
+                    v-on:click.native="$router.push(`/rooms/${room.id}/edit`)"
+                >
+                    <v-icon>mdi-pencil</v-icon>
                 </v-btn>
             </v-card-title>
             <v-card-text class="pa-0">

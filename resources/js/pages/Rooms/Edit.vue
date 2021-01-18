@@ -7,7 +7,7 @@
             elevation="10"
         >
             <v-card-title>
-                <span>Room Create</span>
+                <span>Edit Room <strong>{{ room.name }}</strong></span>
                 <v-spacer></v-spacer>
                 <v-btn
                     fab
@@ -166,6 +166,60 @@
                 </v-container>
             </v-form>
         </v-card>
+        <v-container
+            v-if="roomImages.length"
+            class="mt-5"
+            fluid
+        >
+            <v-slide-group
+                :show-arrows="true"
+                >
+                <v-slide-item
+                    v-for="image in roomImages"
+                    :key="image.id"
+                >
+                    <v-hover v-slot="{ hover }">
+                        <v-card
+                            id="images"
+                            :elevation="hover ? 12 : 2"
+                            :class="{ 'on-hover': hover }"
+                            rounded
+                            max-width="280px"
+                            elevation="10"
+                            class="ma-3"
+                        >
+                            <v-img
+                                :src="image.url"
+                                height="225px"
+                            >
+                                <v-card-title class="title white--text">
+                                    <v-row
+                                        class="fill-height flex-column"
+                                        justify="space-between"
+                                    >
+                                        <div class="align-self-center">
+                                            <v-btn
+                                                x-large
+                                                :class="{ 'show-btns': hover }"
+                                                :color="'rgba(255, 255, 255, 0)'"
+                                                icon
+                                                @click="deleteImage(room.id, image.id)"
+                                            >
+                                                <v-icon
+                                                    x-large
+                                                    :class="{ 'show-btns': hover }"
+                                                    :color="'rgba(255, 255, 255, 0)'"
+                                                >mdi-delete-forever</v-icon>
+                                            </v-btn>
+                                        </div>
+                                    </v-row>
+                                </v-card-title>
+                            </v-img>
+                        </v-card>
+                    </v-hover>
+                </v-slide-item>
+            </v-slide-group>
+        </v-container>
         <v-card
             class="mt-5"
             elevation="10"
@@ -197,9 +251,9 @@
                     dark
                     rounded
                     class="indigo accent-4 pa-4"
-                    @click="saveRoom"
+                    @click="updateRoom"
                 >
-                    Save
+                    Update
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -212,19 +266,35 @@ import RoomTypeService from "../../services/roomTypeService"
 import spinnerMixin from "../../mixins/spinnerMixin"
 
 export default {
-    name: "Create",
+    name: "Edit",
     mixins: [spinnerMixin],
 
     beforeRouteEnter(to, from, next) {
-        RoomTypeService.fetchRoomTypes().then((response) => {
-            next(vm => {
-                vm.roomTypes = response
+        RoomTypeService.fetchRoomTypes().then((roomTypeResponse) => {
+            RoomService.fetchRoom(to.params.roomId).then((roomResponse) => {
+                next(vm => {
+                    vm.roomTypes = roomTypeResponse
+                    vm.room = roomResponse
+                    vm.roomImages = vm.room.images
+                    vm.formData.roomType = vm.room.room_type.id
+                    vm.formData.name = vm.room.name
+                    vm.formData.location = vm.room.location
+                    vm.formData.interiorSize = vm.room.interior_size
+                    vm.formData.minOccupancy = vm.room.min_occupancy
+                    vm.formData.maxOccupancy = vm.room.max_occupancy
+                    vm.formData.availableFrom = vm.room.available_from
+                    vm.formData.availableTo = vm.room.available_to
+                    vm.formData.isPublished = vm.room.is_published
+                    vm.formData.description = vm.room.description
+                })
             })
         })
     },
 
     data() {
         return {
+            room: {},
+            roomImages: [],
             roomTypes: [],
             formData: {
                 roomType: {},
@@ -286,20 +356,40 @@ export default {
     },
 
     methods: {
-        saveRoom() {
+        updateRoom() {
             if (this.$refs.room_type.validate()
                 && this.$refs.room_details.validate()
                 && this.$refs.room_description.validate()
                 && this.$refs.room_availability.validate()
                 && this.$refs.room_images.validate()) {
-                RoomService.createRoom(this.formData).then((response) => {
+                RoomService.updateRoom(this.$route.params.roomId, this.formData).then(() => {
                     for (let i = 0; i < this.formData.images.length; i++) {
-                        RoomService.saveImage(response.id, this.formData.images[i])
+                        RoomService.saveImage(this.$route.params.roomId, this.formData.images[i])
                     }
                     this.$router.push('/rooms')
                 })
             }
+        },
+
+        deleteImage(roomId, imageId) {
+            RoomService.deleteImage(roomId, imageId).then(() => {
+                this.roomImages.splice(this.roomImages.indexOf(imageId), 1)
+            })
         }
     }
 }
 </script>
+
+<style scoped>
+.v-card#images {
+    transition: opacity .4s ease-in-out;
+}
+
+.v-card#images:not(.on-hover) {
+    opacity: 0.4;
+}
+
+.show-btns {
+    color: rgba(255, 255, 255, 1) !important;
+}
+</style>

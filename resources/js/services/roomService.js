@@ -49,7 +49,28 @@ class RoomService {
             })
     }
 
-    async uploadImages(roomId, image) {
+    async updateRoom(roomId, data) {
+        return await axios.put(`api/rooms/${roomId}`, {
+            name: data.name,
+            location: data.location,
+            interior_size: data.interiorSize,
+            room_type_id: data.roomType,
+            min_occupancy: data.minOccupancy,
+            max_occupancy: data.maxOccupancy,
+            available_from: data.availableFrom,
+            available_to: data.availableTo,
+            is_published: data.isPublished,
+            description: data.description,
+            images: data.images
+        })
+            .then( response => {
+                return response.data
+            }).catch(error => {
+                console.error(error.message)
+            })
+    }
+
+    async saveImage(roomId, image) {
 
         let formData = new FormData
         formData.append('image', image)
@@ -61,6 +82,15 @@ class RoomService {
         }
 
         return await axios.post(`api/rooms/${roomId}/image`, formData, conf)
+            .then( response => {
+                return response.data.data
+            }).catch(error => {
+                console.error(error.message)
+            })
+    }
+
+    async deleteImage(roomId, imageId) {
+        return await axios.delete(`api/rooms/${roomId}/image/${imageId}`)
             .then( response => {
                 return response.data.data
             }).catch(error => {

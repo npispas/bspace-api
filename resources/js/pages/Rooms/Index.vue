@@ -57,6 +57,7 @@
                     <v-chip
                         :color="getColor(item.is_published)"
                         dark
+                        small
                     >
                         {{ item.is_published ? 'Yes' : 'No' }}
                     </v-chip>
@@ -65,7 +66,7 @@
                     <v-icon
                         v-if="$can('edit', 'Room')"
                         small
-                        @click=""
+                        @click="$router.push(`/rooms/${item.id}/edit`)"
                     >
                         mdi-pencil
                     </v-icon>
