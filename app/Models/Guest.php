@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $last_name
  * @property $email
  * @property $image
+ * @property $status
  * @property $created_at
  * @property $updated_at
  */
