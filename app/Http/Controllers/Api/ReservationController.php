@@ -19,7 +19,7 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        return ReservationResource::collection(Reservation::all()->load('roomStays.guests'));
+        return ReservationResource::collection(Reservation::all()->load('roomStays', 'roomStays.guests'));
     }
 
     /**

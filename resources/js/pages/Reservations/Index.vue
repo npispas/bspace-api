@@ -45,7 +45,26 @@
                         </v-dialog>
                     </v-toolbar>
                 </template>
-
+                <template v-slot:item.arrival="{ item }">
+                    <span>{{ item.room_stays[0].start_date }}</span>
+                    <br>
+                    <span></span>
+                </template>
+                <template v-slot:item.departure="{ item }">
+                    <span>{{ item.room_stays[0].end_date }}</span>
+                </template>
+                <template v-slot:item.status="{ item }">
+                    <v-chip
+                        :color="getColor(item.status)"
+                        dark
+                        small
+                    >
+                        {{ item.status }}
+                    </v-chip>
+                </template>
+                <template v-slot:item.total="{ item }">
+                    <span>{{ `${parseFloat(item.total_amount).toFixed(2)} ${item.currency}` }}</span>
+                </template>
                 <template v-slot:item.actions="{ item }">
                     <v-icon
                         v-if="$can('edit', 'Reservation')"
@@ -70,20 +89,6 @@
                         mdi-delete
                     </v-icon>
                 </template>
-
-                <template v-slot:item.status="{ item }">
-                    <v-chip
-                        :color="getColor(item.status)"
-                        dark
-                    >
-                        {{ item.status }}
-                    </v-chip>
-                </template>
-
-                <template v-slot:item.total="{ item }">
-                    <span>{{ `${item.total_amount} ${item.currency}` }}</span>
-                </template>
-
             </v-data-table>
         </v-card>
     </v-container>
@@ -112,10 +117,10 @@
                 dialogDelete: false,
                 headers: [
                     { text: 'Reservation ID', align: 'start', value: 'unique_id' },
-                    { text: 'Comments', value: 'comments', sortable: false },
-                    { text: 'Status', value: 'status' },
                     { text: 'Owner', value: 'owner_name' },
-                    { text: 'Guests', value: 'guest_count' },
+                    { text: 'Arrival', value: 'arrival' },
+                    { text: 'Departure', value: 'departure' },
+                    { text: 'Status', value: 'status' },
                     { text: 'Total', value: 'total' },
                     { text: 'Actions', value: 'actions', sortable: false }
                 ],
@@ -139,7 +144,7 @@
             getColor: function (status) {
                 switch (status) {
                     case 'checked-in': return 'green'
-                    case 'checked-out': return 'gray'
+                    case 'checked-out': return 'grey'
                     case 'confirmed': return 'blue'
                     case 'unconfirmed': return 'orange'
                     case 'canceled': return 'red'

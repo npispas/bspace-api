@@ -14,9 +14,20 @@
                     x-small
                     :retain-focus-on-click="false"
                     class="indigo accent-4"
-                    v-on:click.native="$router.push('/reservations')"
+                    v-on:click.native="$router.go(-1)"
                 >
                     <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
+                <v-btn
+                    v-if="$can('edit', 'Reservation')"
+                    fab
+                    dark
+                    x-small
+                    :retain-focus-on-click="false"
+                    class="indigo accent-4 ml-1"
+                    v-on:click.native="$router.push(`/reservations/${reservation.id}/edit`)"
+                >
+                    <v-icon>mdi-pencil</v-icon>
                 </v-btn>
             </v-card-title>
             <v-card-text class="pa-0">
@@ -31,7 +42,7 @@
                     <v-col sm="6" md="3" lg="3" xl="3" class="border pa-3">
                         <v-icon class="pb-4">mdi-account-cash-outline</v-icon>
                         <br>
-                        <span><strong>{{ `${reservation.total_amount} ${reservation.currency}` }}</strong></span>
+                        <span><strong>{{`${parseFloat(reservation.total_amount).toFixed(2)} ${reservation.currency}` }}</strong></span>
                         <br>
                         <span class="text-md-subtitle-2 text-muted">Total</span>
                     </v-col>
@@ -77,7 +88,7 @@ export default {
         getColor: function (status) {
             switch (status) {
                 case 'checked-in': return 'green--text'
-                case 'checked-out': return 'gray--text'
+                case 'checked-out': return 'grey--text'
                 case 'confirmed': return 'blue--text'
                 case 'unconfirmed': return 'orange--text'
                 case 'canceled': return 'red--text'
