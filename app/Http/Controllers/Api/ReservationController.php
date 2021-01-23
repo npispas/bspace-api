@@ -56,7 +56,7 @@ class ReservationController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param Reservation $reservation
-     * @return \Illuminate\Http\JsonResponse
+     * @return ReservationResource
      * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, Reservation $reservation)
@@ -72,12 +72,12 @@ class ReservationController extends Controller
         $roomStay = $reservation->roomStays()->firstOrFail();
         $roomStay->start_date = $request->get('start_date');
         $roomStay->start_hour = $request->get('start_hour');
-        $roomStay->end_date = $request->get('start_date');
+        $roomStay->end_date = $request->get('end_date');
         $roomStay->end_hour = $request->get('start_hour');
         $roomStay->rooms()->sync($request->get('room'));
         $roomStay->save();
 
-        return response()->json([], Response::HTTP_OK);
+        return ReservationResource::make($reservation->refresh());
     }
 
     /**

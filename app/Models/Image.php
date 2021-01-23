@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @package App\Models
  * @property $id
  * @property $url
+ * @property $path
  * @property $created_at
  * @property $updated_at
  */

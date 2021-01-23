@@ -70,7 +70,8 @@ class Room extends Model
         $path = $uploadedFile->store('uploads', 'public');
 
         $roomImage = new Image();
-        $roomImage->url = "/$path";
+        $roomImage->path = "/$path";
+        $roomImage->url = config('app.url') . "/$path";
 
         $this->images()->save($roomImage);
     }
@@ -82,7 +83,7 @@ class Room extends Model
      * @throws Exception
      */
     public function deleteImage(Image $image) {
-        Storage::disk('public')->delete($image->url);
+        Storage::disk('public')->delete($image->path);
 
         $image->delete();
     }

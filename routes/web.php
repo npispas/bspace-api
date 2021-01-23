@@ -31,8 +31,8 @@ Route::group(['prefix' => 'dashboard'], function () {
 
 Route::group(['prefix' => 'api', 'middleware' => ['auth', 'json.response']], function () {
 
-    Route::get('/statistics', \App\Http\Controllers\Api\StatisticController::class)
-        ->name('statistics');
+    Route::get('/metrics', \App\Http\Controllers\Api\MetricController::class)
+        ->name('metrics');
 
     Route::post('/auth/user/image', [\App\Http\Controllers\Auth\UserController::class, 'storeImage'])
         ->name('auth.user.image.store');
@@ -60,9 +60,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth', 'json.response']], fun
     Route::resource('/room_types', \App\Http\Controllers\Api\RoomTypeController::class)
         ->only(['index', 'show'])
         ->names('room_types');
-
-    Route::post('/rooms/{room}/image', [\App\Http\Controllers\Api\RoomController::class, 'storeImage'])
-        ->name('rooms.image.store');
 
     Route::delete('/rooms/{room}/image/{image}', [\App\Http\Controllers\Api\RoomController::class, 'deleteImage'])
         ->name('rooms.image.delete');

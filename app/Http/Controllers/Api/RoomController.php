@@ -28,7 +28,7 @@ class RoomController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return RoomResource
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
@@ -43,7 +43,8 @@ class RoomController extends Controller
             'available_to' => ['required', 'date'],
             'room_type_id' => ['required', 'integer'],
             'is_published' => ['required', 'integer', 'min:0', 'max:1'],
-            'description' => ['required', 'string', 'max:191']
+            'description' => ['required', 'string', 'max:191'],
+            'images.*' => ['sometimes', 'mimes:jpg,bmp,png']
         ]);
 
         $room = new Room();
@@ -61,26 +62,15 @@ class RoomController extends Controller
         $roomType = RoomType::findOrFail($request->get('room_type_id'));
         $roomType->rooms()->save($room);
 
-        return response()->json(RoomResource::make($room), Response::HTTP_CREATED);
-    }
+        $files = $request->file('images');
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @param Room $room
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function storeImage(Request $request, Room $room)
-    {
-        $this->validate($request, [
-            'image' => ['required', 'mimes:jpg,bmp,png']
-        ]);
+        if (!empty($files)) {
+            foreach ($files as $file) {
+                $room->saveImage($file);
+            }
+        }
 
-        $room->saveImage($request->file('image'));
-
-        return response()->json('', Response::HTTP_CREATED);
+        return RoomResource::make($room);
     }
 
     /**
@@ -88,14 +78,14 @@ class RoomController extends Controller
      *
      * @param Room $room
      * @param Image $image
-     * @return \Illuminate\Http\JsonResponse
+     * @return RoomResource
      * @throws \Illuminate\Validation\ValidationException
      */
     public function deleteImage(Room $room, Image $image)
     {
         $room->deleteImage($image);
 
-        return response()->json('', Response::HTTP_OK);
+        return RoomResource::make($room);
     }
 
     /**
@@ -129,7 +119,8 @@ class RoomController extends Controller
             'available_to' => ['required', 'date'],
             'room_type_id' => ['required', 'integer'],
             'is_published' => ['required', 'integer', 'min:0', 'max:1'],
-            'description' => ['required', 'string', 'max:191']
+            'description' => ['required', 'string', 'max:191'],
+            'images.*' => ['sometimes', 'mimes:jpg,bmp,png']
         ]);
 
         $room->name = $request->get('name');
@@ -145,7 +136,15 @@ class RoomController extends Controller
         $roomType = RoomType::findOrFail($request->get('room_type_id'));
         $roomType->rooms()->save($room);
 
-        return response()->json(RoomResource::make($room), Response::HTTP_OK);
+        $files = $request->file('images');
+
+        if (!empty($files)) {
+            foreach ($files as $file) {
+                $room->saveImage($file);
+            }
+        }
+
+        return response()->json(RoomResource::make($room->load('images')), Response::HTTP_OK);
     }
 
     /**

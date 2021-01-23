@@ -96,14 +96,15 @@ class User extends Authenticatable
     public function saveImage(UploadedFile $uploadedFile) {
 
         if ($this->image) {
-            Storage::disk('public')->delete($this->image->url);
+            Storage::disk('public')->delete($this->image->path);
             $this->image()->delete();
         }
 
         $path = $uploadedFile->store('uploads', 'public');
 
         $roomImage = new Image();
-        $roomImage->url = "/$path";
+        $roomImage->url = config('app.url') . "/$path";
+        $roomImage->path = "/$path";
 
         $this->image()->save($roomImage);
     }

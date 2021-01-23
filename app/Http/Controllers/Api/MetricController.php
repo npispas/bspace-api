@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use Carbon\Carbon;
 
-class StatisticController extends Controller
+class MetricController extends Controller
 {
     /**
      * Handle the incoming request.
