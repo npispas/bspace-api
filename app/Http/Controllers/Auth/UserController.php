@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Permission as PermissionResource;
+use App\Http\Resources\Image as ImageResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -18,21 +18,20 @@ class UserController extends Controller
     public function getAuthUser()
     {
         return response()->json([
-            'user' => [
-                'username' => Auth::user()->username,
-                'image' => Auth::user()->image ?? null,
-            ],
+            'id' => Auth::user()->id,
+            'username' => Auth::user()->username,
+            'email' => Auth::user()->email,
+            'role' => Auth::user()->roles()->first(),
+            'avatar' => Auth::user()->image ?? null,
             'permissions' => PermissionResource::collection(Auth::user()->getAllPermissions())
         ]);
     }
-
-
 
     /**
      * Save user's avatar.
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return ImageResource
      * @throws \Illuminate\Validation\ValidationException
      */
     public function storeImage(Request $request)
@@ -43,6 +42,6 @@ class UserController extends Controller
 
         Auth::user()->saveImage($request->file('image'));
 
-        return response()->json('', Response::HTTP_CREATED);
+        return ImageResource::make(Auth::user()->image);
     }
 }
