@@ -26,11 +26,11 @@ class ReservationFactory extends Factory
             'unique_id' => uniqid('test-', false),
             'comments' => $this->faker->realText(20),
             'status' => $this->faker->randomElement([
-                'confirmed',
-                'unconfirmed',
-                'canceled',
-                'checked-in',
-                'checked-out'
+                'Confirmed',
+                'Unconfirmed',
+                'Canceled',
+                'Checked-in',
+                'Checked-out'
             ]),
             'owner_name' => $this->faker->name,
             'total_amount' => $this->faker->randomFloat('2', 10.00, 50.000),

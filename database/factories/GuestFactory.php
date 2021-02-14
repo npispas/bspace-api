@@ -28,7 +28,7 @@ class GuestFactory extends Factory
             'nationality' => $this->faker->country,
             'phone' => $this->faker->phoneNumber,
             'address' => $this->faker->address,
-            'status' => $this->faker->randomElement(['arrived', 'pending']),
+            'status' => $this->faker->randomElement(['Arrived', 'Pending']),
             'created_at' => now(),
             'updated_at' => now()
         ];
