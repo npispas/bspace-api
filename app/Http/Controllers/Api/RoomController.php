@@ -85,7 +85,7 @@ class RoomController extends Controller
     {
         $room->deleteImage($image);
 
-        return RoomResource::make($room);
+        return RoomResource::make($room->load('images', 'roomType'));
     }
 
     /**
