@@ -51,3 +51,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         ->except(['create', 'edit'])
         ->names('rooms');
 });
+
+Route::post('/reservations/search', [\App\Http\Controllers\Api\ReservationController::class, 'search']);
+Route::post('/reservations/{reservation}/checkin', [\App\Http\Controllers\Api\ReservationController::class, 'checkin']);
