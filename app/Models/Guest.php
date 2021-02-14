@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class Guest represents all the available guests in the system connected to a reservation.
@@ -14,6 +16,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property $first_name
  * @property $last_name
  * @property $email
+ * @property $nationality
+ * @property $phone
+ * @property $address
  * @property $image
  * @property $status
  * @property $created_at
@@ -81,6 +86,42 @@ class Guest extends Model
         $this->status = 'Arrived';
         $this->save();
     }
+
+    /**
+     * Save an image to the disk storage for a specific model.
+     *
+     * @param array $attributes
+     * @param array $options
+     * @return Guest
+     */
+    public function update(array $attributes = [], array $options = []) {
+        $this->first_name = $attributes['first_name'];
+        $this->last_name = $attributes['last_name'];
+        $this->email = $attributes['email'];
+        $this->nationality = $attributes['nationality'];
+        $this->phone = $attributes['phone'];
+        $this->address = $attributes['address'];
+        $this->updated_at = now();
+        $this->save();
+
+        return $this;
+    }
+
+    /**
+     * Save an image to the disk storage for a specific model.
+     *
+     * @param UploadedFile $uploadedFile
+     */
+    public function saveImage(UploadedFile $uploadedFile) {
+        $path = $uploadedFile->store('uploads', 'public');
+
+        $guestImage = new Image();
+        $guestImage->url = config('app.url') . "/$path";
+        $guestImage->path = "/$path";
+
+        $this->image()->save($guestImage);
+    }
+
 
     /**
      * Local query for guest via email.

@@ -78,13 +78,16 @@ class ReservationController extends Controller
             'email' => ['required', 'email', 'max:191'],
             'nationality' => ['required', 'string', 'max:191'],
             'address' => ['required', 'string', 'max:191'],
-            'phone' => ['required', 'numeric', 'digits_between:10,15']
+            'phone' => ['required', 'numeric', 'digits_between:10,15'],
+            'image' => ['required', 'mimes:jpg,bmp,png']
         ]);
 
         $guest = Guest::whereEmail($validated['email'])
             ->whereFirstName($validated['first_name'])
             ->whereLastName($validated['last_name'])
             ->firstOrFail();
+        $guest->update($validated);
+        $guest->saveImage($validated['image']);
         $guest->checkin();
 
         $reservation->checkin();
