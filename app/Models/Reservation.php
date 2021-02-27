@@ -114,4 +114,33 @@ class Reservation extends Model
             return $q->where('email', $email);
         });
     }
+
+    /**
+     * Create a new reservation.
+     *
+     * @param array $attributes
+     * @return Reservation
+     */
+    public static function create(array $attributes)
+    {
+        $reservation = new self();
+        $reservation->comments = '';
+        $reservation->owner_name = $attributes['first_name'] . " " . $attributes['last_name'];
+        $reservation->total_amount = 388.89;
+        $reservation->total_due = 388.89;
+        $reservation->currency = 'EUR';
+        $reservation->created_at = now();
+        $reservation->updated_at = now();
+        $reservation->save();
+
+        $attributes['reservation_id'] = $reservation->id;
+
+        $roomStay = RoomStay::create($attributes);
+
+        $attributes['room_stay_id'] = $roomStay->id;
+
+        Guest::create($attributes);
+
+        return $reservation;
+    }
 }

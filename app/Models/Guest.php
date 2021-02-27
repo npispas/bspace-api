@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * Class Guest represents all the available guests in the system connected to a reservation.
@@ -21,6 +20,8 @@ use Illuminate\Support\Facades\Storage;
  * @property $address
  * @property $image
  * @property $status
+ * @property $room_stay_id
+ * @property $reservation_id
  * @property $created_at
  * @property $updated_at
  * @method static whereEmail($email)
@@ -157,5 +158,37 @@ class Guest extends Model
     public static function scopeWhereLastName(Builder $query, $lastName)
     {
         return $query->where('last_name', $lastName);
+    }
+
+    /**
+     * Create a new guest.
+     *
+     * @param array $attributes
+     * @return Guest
+     */
+    public static function create(array $attributes)
+    {
+        $guest = new self();
+        $guest->first_name = $attributes['first_name'];
+        $guest->last_name = $attributes['last_name'];
+        $guest->email = $attributes['email'];
+        $guest->nationality = $attributes['nationality'];
+        $guest->phone = $attributes['phone'];
+        $guest->address = $attributes['address'];
+        $guest->room_stay_id = $attributes['room_stay_id'];
+        $guest->reservation_id = $attributes['reservation_id'];
+        $guest->save();
+
+        if (! empty($validated['invitations'])) {
+            foreach ($validated['invitations'] as $invitationEmail) {
+                $guest = new self();
+                $guest->email = $invitationEmail;
+                $guest->room_stay_id = $attributes['room_stay_id'];
+                $guest->reservation_id = $attributes['reservation_id'];
+                $guest->save();
+            }
+        }
+
+        return $guest;
     }
 }

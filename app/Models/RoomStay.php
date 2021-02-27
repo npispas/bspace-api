@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $start_hour
  * @property $end_date
  * @property $end_hour
+ * @property $reservation_id
  * @property $created_at
  * @property $updated_at
  */
@@ -80,5 +81,27 @@ class RoomStay extends Model
         $endDate = Carbon::createFromFormat('Y-m-d', $this->end_date);
 
         return $startDate->diffInDays($endDate);
+    }
+
+    /**
+     * Create a new room stay.
+     *
+     * @param array $attributes
+     * @return RoomStay
+     */
+    public static function create(array $attributes)
+    {
+        $roomStay = new self();
+        $roomStay->reservation_id = $attributes['reservation_id'];
+        $roomStay->start_date = $attributes['start_date'];
+        $roomStay->start_hour = '12:00:00';
+        $roomStay->end_date = $attributes['end_date'];
+        $roomStay->end_hour = '12:00:00';
+        $roomStay->created_at = now();
+        $roomStay->updated_at = now();
+        $roomStay->save();
+        $roomStay->rooms()->sync($attributes['room_id']);
+
+        return $roomStay;
     }
 }

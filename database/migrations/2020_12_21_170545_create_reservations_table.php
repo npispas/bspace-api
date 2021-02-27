@@ -15,9 +15,9 @@ class CreateReservationsTable extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->string('unique_id');
+            $table->string('unique_id')->unique()->default(uniqid('', false));
             $table->string('comments');
-            $table->string('status');
+            $table->string('status')->default('Confirmed');
             $table->string('owner_name');
             $table->unsignedDouble('total_amount');
             $table->unsignedDouble('total_due');

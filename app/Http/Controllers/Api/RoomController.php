@@ -11,7 +11,6 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Str;
 
 class RoomController extends Controller
 {
@@ -34,7 +33,7 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $validated = $this->validate($request, [
             'name' => ['required', 'string', 'max:100'],
             'location' => ['required', 'string', 'max:100'],
             'interior_size' => ['required', 'integer', 'min:10'],
@@ -48,28 +47,7 @@ class RoomController extends Controller
             'images.*' => ['sometimes', 'mimes:jpg,bmp,png']
         ]);
 
-        $room = new Room();
-        $room->name = $request->get('name');
-        $room->unique_id = Str::uuid();
-        $room->location = $request->get('location');
-        $room->interior_size = $request->get('interior_size');
-        $room->min_occupancy = $request->get('min_occupancy');
-        $room->max_occupancy = $request->get('max_occupancy');
-        $room->available_from = $request->get('available_from');
-        $room->available_to = $request->get('available_to');
-        $room->is_published = $request->get('is_published');
-        $room->description = $request->get('description');
-
-        $roomType = RoomType::findOrFail($request->get('room_type_id'));
-        $roomType->rooms()->save($room);
-
-        $files = $request->file('images');
-
-        if (!empty($files)) {
-            foreach ($files as $file) {
-                $room->saveImage($file);
-            }
-        }
+        $room = Room::create($validated);
 
         return RoomResource::make($room);
     }
