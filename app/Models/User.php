@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -26,8 +28,10 @@ use Illuminate\Notifications\Notifiable;
  * @property $image
  * @property $created_at
  * @property $updated_at
+ * @method static whereEmail($email)
+ * @method static whereVerified()
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, HasRoles;
 
@@ -44,7 +48,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'username',
         'email',
         'password',
     ];
@@ -107,5 +113,28 @@ class User extends Authenticatable
         $roomImage->path = "/$path";
 
         $this->image()->save($roomImage);
+    }
+
+    /**
+     * Filter by email.
+     *
+     * @param Builder $query
+     * @param string $email
+     * @return Builder
+     */
+    public static function scopeWhereEmail(Builder $query, string $email)
+    {
+        return $query->where('email', $email);
+    }
+
+    /**
+     * Filter by verified users.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public static function scopeWhereVerified(Builder $query)
+    {
+        return $query->whereRaw('email_verified_at <> ""');
     }
 }

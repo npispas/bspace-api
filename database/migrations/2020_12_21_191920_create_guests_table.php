@@ -15,13 +15,13 @@ class CreateGuestsTable extends Migration
     {
         Schema::create('guests', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->string('email');
-            $table->string('nationality');
-            $table->string('phone');
-            $table->string('address');
-            $table->string('status');
+            $table->string('nationality')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('status')->default('Pending');
             $table->timestamps();
 
             $table->unsignedBigInteger('reservation_id');

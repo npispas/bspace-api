@@ -5,8 +5,11 @@ namespace App\Models;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /**
  * Class Room represents all the rooms available in the system.
@@ -26,6 +29,8 @@ use Illuminate\Support\Facades\Storage;
  * @property $location
  * @property $created_at
  * @property $updated_at
+ * @method static whereOccupancy($guestCount)
+ * @method static whereAvailable($startDate, $endDate)
  */
 class Room extends Model
 {
@@ -86,5 +91,62 @@ class Room extends Model
         Storage::disk('public')->delete($image->path);
 
         $image->delete();
+    }
+
+    /**
+     * Local query for rooms which can hold this number of guests.
+     *
+     * @param Builder $query
+     * @param int $guestCount
+     * @return Builder
+     */
+    public static function scopeWhereOccupancy(Builder $query, int $guestCount)
+    {
+        return $query->where('min_occupancy', '<=', $guestCount)
+            ->where('max_occupancy', '>=', $guestCount);
+    }
+
+    /**
+     * Local query for rooms which are not reserved during or after the provided start date and during or prior the
+     * provided end date.
+     *
+     * @param Builder $query
+     * @param string $startDate
+     * @param string $endDate
+     * @return Builder
+     */
+    public static function scopeWhereAvailable(Builder $query, string $startDate, string $endDate)
+    {
+        return $query->whereHas('roomStays', function ($q) use ($startDate, $endDate) {
+            return $q->where('start_date', '>=', $endDate)->orWhere('end_date', '<=', $startDate);
+        });
+    }
+
+    public static function create(array $attributes)
+    {
+        $room = new self();
+        $room->name = $attributes['name'];
+        $room->unique_id = Str::uuid();
+        $room->location = $attributes['location'];
+        $room->interior_size = $attributes['interior_size'];
+        $room->min_occupancy = $attributes['min_occupancy'];
+        $room->max_occupancy = $attributes['max_occupancy'];
+        $room->available_from = $attributes['available_from'];
+        $room->available_to = $attributes['available_to'];
+        $room->is_published = $attributes['is_published'];
+        $room->description = $attributes['description'];
+
+        $roomType = RoomType::findOrFail($attributes['room_type_id']);
+        $roomType->rooms()->save($room);
+
+        $files = $attributes['images'];
+
+        if (!empty($files)) {
+            foreach ($files as $file) {
+                $room->saveImage($file);
+            }
+        }
+
+        return $room;
     }
 }
