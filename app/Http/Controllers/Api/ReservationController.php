@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Guest;
 use App\Models\Reservation;
 use App\Http\Resources\Reservation as ReservationResource;
 use Exception;
@@ -27,10 +28,92 @@ class ReservationController extends Controller
      *
      * @param Request $request
      * @return ReservationResource
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        //
+        $validated = $this->validate($request, [
+            'room_id' => ['required', 'integer'],
+            'first_name' => ['required', 'string', 'max:50'],
+            'last_name' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'email', 'max:70'],
+            'nationality' => ['required', 'string', 'max:70'],
+            'phone' => ['required', 'numeric', 'digits_between:10,15'],
+            'address' => ['required', 'string', 'max:50'],
+            'invitations.*' => ['required', 'email', 'max:50'],
+            'start_date' => ['required', 'date_format:Y-m-d'],
+            'end_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:start_date'],
+        ]);
+
+        $reservation = Reservation::create($validated);
+
+        return ReservationResource::make($reservation->load(
+            'roomStays',
+            'roomStays.rooms',
+            'roomStays.rooms.roomType',
+            'roomStays.guests',
+        ));
+    }
+
+    /**
+     * Search reservation with the provided reservation_id and guest's email.
+     *
+     * @param Request $request
+     * @return ReservationResource
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function search(Request $request)
+    {
+        $validated = $this->validate($request, [
+            'reservation_id' => ['required', 'string', 'max:191'],
+            'email' => ['required', 'email']
+        ]);
+
+        $reservation = Reservation::whereUniqueId($validated['reservation_id'])
+            ->whereGuestEmail($validated['email'])
+            ->firstOrFail();
+
+        return ReservationResource::make($reservation->load(
+            'roomStays',
+            'roomStays.rooms',
+            'roomStays.rooms.roomType',
+            'roomStays.rooms.images',
+            'roomStays.guests',
+            'roomStays.guests.image'
+        ));
+    }
+
+    /**
+     * Checkin a guest for a specific reservation.
+     *
+     * @param Request $request
+     * @param Reservation $reservation
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function checkin(Request $request, Reservation $reservation)
+    {
+        $validated = $this->validate($request, [
+            'first_name' => ['required', 'string', 'max:191'],
+            'last_name' => ['required', 'string', 'max:191'],
+            'email' => ['required', 'email', 'max:191'],
+            'nationality' => ['required', 'string', 'max:191'],
+            'address' => ['required', 'string', 'max:191'],
+            'phone' => ['required', 'numeric', 'digits_between:10,15'],
+            'image' => ['required', 'mimes:jpg,bmp,png']
+        ]);
+
+        $guest = Guest::whereEmail($validated['email'])
+            ->whereFirstName($validated['first_name'])
+            ->whereLastName($validated['last_name'])
+            ->firstOrFail();
+        $guest->update($validated);
+        $guest->saveImage($validated['image']);
+        $guest->checkin();
+
+        $reservation->checkin();
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
     /**

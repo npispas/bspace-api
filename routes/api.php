@@ -33,6 +33,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/permissions',[\App\Http\Controllers\Api\PermissionController::class, 'index'])
         ->name('permissions.index');
 
+    Route::post('/reservations/search', [\App\Http\Controllers\Api\ReservationController::class, 'search'])
+        ->name('reservations.search');
+
     Route::get('/reservations/generate', [\App\Http\Controllers\Api\ReservationController::class, 'generate'])
         ->name('reservations.generate');
 
@@ -44,6 +47,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         ->only(['index', 'show'])
         ->names('room_types');
 
+    Route::post('/rooms/availability', [\App\Http\Controllers\Api\RoomController::class, 'availability'])
+        ->name('rooms.availability');
+
     Route::delete('/rooms/{room}/image/{image}', [\App\Http\Controllers\Api\RoomController::class, 'deleteImage'])
         ->name('rooms.image.delete');
 
@@ -51,3 +57,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         ->except(['create', 'edit'])
         ->names('rooms');
 });
+
+Route::post('/reservations/{reservation}/checkin', [\App\Http\Controllers\Api\ReservationController::class, 'checkin']);

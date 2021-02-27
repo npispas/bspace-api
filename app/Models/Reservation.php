@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,11 +13,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property $id
  * @property $unique_id
  * @property $comments
+ * @property $status
+ * @property $owner_name
  * @property $total_amount
  * @property $total_due
  * @property $currency
  * @property $created_at
  * @property $updated_at
+ * @method static whereUniqueId($reservationId)
+ * @method static whereGuestEmail($email)
  */
 class Reservation extends Model
 {
@@ -73,5 +78,40 @@ class Reservation extends Model
         }
 
         return $roomCount;
+    }
+
+    /**
+     * Set guest status to arrived.
+     */
+    public function checkin()
+    {
+        $this->status = 'Checked-in';
+        $this->save();
+    }
+
+    /**
+     * Local query for reservation via unique id.
+     *
+     * @param Builder $query
+     * @param $reservationId
+     * @return Builder
+     */
+    public static function scopeWhereUniqueId(Builder $query, $reservationId)
+    {
+        return $query->where('unique_id', $reservationId);
+    }
+
+    /**
+     * Local query for reservation via guest's email.
+     *
+     * @param Builder $query
+     * @param $email
+     * @return Builder
+     */
+    public static function scopeWhereGuestEmail(Builder $query, $email)
+    {
+        return $query->whereHas('guests', static function ($q) use ($email) {
+            return $q->where('email', $email);
+        });
     }
 }

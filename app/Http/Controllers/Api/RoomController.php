@@ -8,6 +8,7 @@ use App\Models\Image;
 use App\Models\Room;
 use App\Models\RoomType;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
@@ -85,7 +86,7 @@ class RoomController extends Controller
     {
         $room->deleteImage($image);
 
-        return RoomResource::make($room);
+        return RoomResource::make($room->load('images', 'roomType'));
     }
 
     /**
@@ -97,6 +98,33 @@ class RoomController extends Controller
     public function show(Room $room)
     {
         return RoomResource::make($room->load('images', 'roomType'));
+    }
+
+    /**
+     * Search availability for a specific time period and guest count.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function availability(Request $request)
+    {
+        $validated = $this->validate($request, [
+            'start_date' => ['required', 'date_format:Y-m-d'],
+            'end_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:start_date'],
+            'guest_count' => ['required', 'numeric', 'between:1,10'],
+        ]);
+
+        $rooms = Room::whereOccupancy($validated['guest_count'])
+            ->whereAvailable($validated['start_date'], $validated['end_date'])
+            ->with('images', 'roomType')
+            ->get();
+
+        if (count($rooms) === 0) {
+            throw new ModelNotFoundException('No query results for App\Models\Room');
+        }
+
+        return RoomResource::collection($rooms);
     }
 
     /**
