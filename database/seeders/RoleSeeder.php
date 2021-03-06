@@ -31,6 +31,7 @@ class RoleSeeder extends Seeder
 
         // User Role permissions
         $userRole->givePermissionTo('create_reservations');
+        $userRole->givePermissionTo('view_rooms');
 
         // Staff Role permissions
         $staffRole->givePermissionTo('view_reservations');
