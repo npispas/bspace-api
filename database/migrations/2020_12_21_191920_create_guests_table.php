@@ -15,6 +15,7 @@ class CreateGuestsTable extends Migration
     {
         Schema::create('guests', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_id')->default(uniqid('', false));
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email');
