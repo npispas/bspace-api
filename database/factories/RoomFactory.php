@@ -22,7 +22,6 @@ class RoomFactory extends Factory
     public function definition()
     {
         return [
-            'unique_id' => uniqid('room-', false),
             'name' => $this->faker->randomElement(['101', '102', '103', '104', '105', '107', '108', '109', '110']),
             'description' => $this->faker->realText(120),
             'interior_size' => $this->faker->numberBetween(20, 120),

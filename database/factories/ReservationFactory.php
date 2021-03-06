@@ -23,7 +23,6 @@ class ReservationFactory extends Factory
     public function definition()
     {
         return [
-            'unique_id' => uniqid('test-', false),
             'comments' => $this->faker->realText(20),
             'status' => $this->faker->randomElement([
                 'Confirmed',

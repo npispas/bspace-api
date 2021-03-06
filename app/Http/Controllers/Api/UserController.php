@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Http\Resources\User as UserResource;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -39,64 +40,43 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreUserRequest $request
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $this->validate($request, [
-            'username' => ['required', 'string'],
-            'email' => ['required', 'string'],
-            'first_name' => ['required', 'string'],
-            'last_name' => ['required', 'string'],
-            'password' => ['required', 'string'],
-            'repeat_password' => ['required', 'string'],
-            'role' => ['required', 'integer', 'min:1'],
-            'permissions' => ['required', 'array'],
-        ]);
+        $validated =  $request->validated();
 
         $user = new User();
-        $user->username = $request->get('username');
-        $user->email = $request->get('email');
-        $user->first_name = $request->get('first_name');
-        $user->last_name = $request->get('last_name');
-        $user->password = Hash::make($request->get('password'));
+        $user->username = $validated['username'];
+        $user->email = $validated['email'];
+        $user->first_name = $validated['first_name'];
+        $user->last_name = $validated['last_name'];
+        $user->password = Hash::make($validated['password']);
         $user->email_verified_at = now();
         $user->save();
+        $user->assignRole($validated['role']);
 
-        $user->assignRole($request->get('role'));
-
-        foreach ($request->get('permissions') as $permission) {
-            $user->givePermissionTo($permission['name']);
+        if (isset($validated['permissions'])) {
+            foreach ($validated['permissions'] as $permission) {
+                $user->givePermissionTo($permission['name']);
+            }
         }
 
-        return response()->json('Created', Response::HTTP_CREATED);
+        return response()->json([], Response::HTTP_CREATED);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param UpdateUserRequest $request
      * @param User $user
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $this->validate($request, [
-            'permissions.*' => ['required', 'string', 'min:5'],
-        ]);
-
-        $userPermissions = $user->getAllPermissions();
-
-        foreach ($userPermissions as $permission) {
-            $user->revokePermissionTo($permission->name);
-        }
-
-        foreach ($request->get('permissions') as $permission) {
-            $user->givePermissionTo($permission);
-        }
+        $user->update($request->validated());
 
         return response()->json([], Response::HTTP_OK);
     }
