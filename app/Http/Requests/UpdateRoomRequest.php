@@ -14,7 +14,7 @@ class UpdateRoomRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::user()->can('update_rooms');
+        return Auth::user()->can('edit_rooms');
     }
 
     /**
