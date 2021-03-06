@@ -126,7 +126,6 @@ class Room extends Model
     {
         $room = new self();
         $room->name = $attributes['name'];
-        $room->unique_id = Str::uuid();
         $room->location = $attributes['location'];
         $room->interior_size = $attributes['interior_size'];
         $room->min_occupancy = $attributes['min_occupancy'];
@@ -148,5 +147,36 @@ class Room extends Model
         }
 
         return $room;
+    }
+
+    /**
+     * @param array $attributes
+     * @param array $options
+     * @return Room
+     */
+    public function update(array $attributes = [], array $options = [])
+    {
+        $this->name = $attributes['name'];
+        $this->location = $attributes['location'];
+        $this->interior_size = $attributes['interior_size'];
+        $this->min_occupancy = $attributes['min_occupancy'];
+        $this->max_occupancy = $attributes['max_occupancy'];
+        $this->available_from = $attributes['available_from'];
+        $this->available_to = $attributes['available_to'];
+        $this->is_published = $attributes['is_published'];
+        $this->description = $attributes['description'];
+
+        $roomType = RoomType::findOrFail($attributes['room_type_id']);
+        $roomType->rooms()->save($this);
+
+        $files = $attributes['images'];
+
+        if (!empty($files)) {
+            foreach ($files as $file) {
+                $this->saveImage($file);
+            }
+        }
+
+        return $this;
     }
 }
