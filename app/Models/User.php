@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -99,7 +98,8 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @param UploadedFile $uploadedFile
      */
-    public function saveImage(UploadedFile $uploadedFile) {
+    public function saveImage(UploadedFile $uploadedFile)
+    {
 
         if ($this->image) {
             Storage::disk('public')->delete($this->image->path);
@@ -136,5 +136,27 @@ class User extends Authenticatable implements MustVerifyEmail
     public static function scopeWhereVerified(Builder $query)
     {
         return $query->whereRaw('email_verified_at <> ""');
+    }
+
+    /**
+     * Update user.
+     *
+     * @param array $attributes
+     * @param array $options
+     * @return $this|bool
+     */
+    public function update(array $attributes = [], array $options = [])
+    {
+        $userPermissions = $this->getAllPermissions();
+
+        foreach ($userPermissions as $permission) {
+            $this->revokePermissionTo($permission->name);
+        }
+
+        foreach ($attributes['permissions'] as $permission) {
+            $this->givePermissionTo($permission);
+        }
+
+        return $this;
     }
 }
