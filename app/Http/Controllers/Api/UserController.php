@@ -11,7 +11,6 @@ use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -48,9 +47,21 @@ class UserController extends Controller
     {
         $validated =  $request->validated();
 
-        $user = User::create($validated);
-        $role = Role::findByName($validated['name']);
-        $user->assignRole($role);
+        $user = new User();
+        $user->username = $validated['username'];
+        $user->email = $validated['email'];
+        $user->first_name = $validated['first_name'];
+        $user->last_name = $validated['last_name'];
+        $user->password = Hash::make($validated['password']);
+        $user->email_verified_at = now();
+        $user->save();
+        $user->assignRole($validated['role']);
+
+        if (isset($validated['permissions'])) {
+            foreach ($validated['permissions'] as $permission) {
+                $user->givePermissionTo($permission['name']);
+            }
+        }
 
         return response()->json([], Response::HTTP_CREATED);
     }
