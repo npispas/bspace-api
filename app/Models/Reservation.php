@@ -81,12 +81,27 @@ class Reservation extends Model
     }
 
     /**
-     * Set guest status to arrived.
+     * Checkin a reservation.
+     *
+     * @param array $attributes
+     * @return Reservation
      */
-    public function checkin()
+    public function checkin(array $attributes)
     {
+        $guest = Guest::whereEmail($attributes['email'])
+            ->whereFirstName($attributes['first_name'])
+            ->whereLastName($attributes['last_name'])
+            ->firstOrFail();
+
+        // Update guest's profile with the registration data and set status to 'Arrived'
+        $guest->update($attributes);
+        $guest->saveImage($attributes['image']);
+        $guest->checkin();
+
         $this->status = 'Checked-in';
         $this->save();
+
+        return $this;
     }
 
     /**
@@ -142,5 +157,25 @@ class Reservation extends Model
         Guest::create($attributes);
 
         return $reservation;
+    }
+
+    /**
+     * Update a reservation.
+     *
+     * @param array $attributes
+     * @param array $options
+     * @return Reservation
+     */
+    public function update(array $attributes = [], array $options = [])
+    {
+        $roomStay = $this->roomStays()->firstOrFail();
+        $roomStay->start_date = $attributes['start_date'];
+        $roomStay->start_hour = $attributes['start_hour'];
+        $roomStay->end_date = $attributes['end_date'];
+        $roomStay->end_hour = $attributes['start_hour'];
+        $roomStay->rooms()->sync($attributes['room']);
+        $roomStay->save();
+
+        return $this;
     }
 }

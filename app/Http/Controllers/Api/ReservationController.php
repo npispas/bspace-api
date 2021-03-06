@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Guest;
+use App\Http\Requests\CheckinReservationRequest;
+use App\Http\Requests\SearchReservationRequest;
+use App\Http\Requests\StoreReservationRequest;
+use App\Http\Requests\UpdateReservationRequest;
 use App\Models\Reservation;
 use App\Http\Resources\Reservation as ReservationResource;
 use Exception;
@@ -26,26 +29,12 @@ class ReservationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreReservationRequest $request
      * @return ReservationResource
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(StoreReservationRequest $request)
     {
-        $validated = $this->validate($request, [
-            'room_id' => ['required', 'integer'],
-            'first_name' => ['required', 'string', 'max:50'],
-            'last_name' => ['required', 'string', 'max:50'],
-            'email' => ['required', 'email', 'max:70'],
-            'nationality' => ['required', 'string', 'max:70'],
-            'phone' => ['required', 'numeric', 'digits_between:10,15'],
-            'address' => ['required', 'string', 'max:50'],
-            'invitations.*' => ['required', 'email', 'max:50'],
-            'start_date' => ['required', 'date_format:Y-m-d'],
-            'end_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:start_date'],
-        ]);
-
-        $reservation = Reservation::create($validated);
+        $reservation = Reservation::create($request->validated());
 
         return ReservationResource::make($reservation->load(
             'roomStays',
@@ -62,12 +51,9 @@ class ReservationController extends Controller
      * @return ReservationResource
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function search(Request $request)
+    public function search(SearchReservationRequest $request)
     {
-        $validated = $this->validate($request, [
-            'reservation_id' => ['required', 'string', 'max:191'],
-            'email' => ['required', 'email']
-        ]);
+        $validated = $request->validated();
 
         $reservation = Reservation::whereUniqueId($validated['reservation_id'])
             ->whereGuestEmail($validated['email'])
@@ -91,27 +77,9 @@ class ReservationController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function checkin(Request $request, Reservation $reservation)
+    public function checkin(CheckinReservationRequest $request, Reservation $reservation)
     {
-        $validated = $this->validate($request, [
-            'first_name' => ['required', 'string', 'max:191'],
-            'last_name' => ['required', 'string', 'max:191'],
-            'email' => ['required', 'email', 'max:191'],
-            'nationality' => ['required', 'string', 'max:191'],
-            'address' => ['required', 'string', 'max:191'],
-            'phone' => ['required', 'numeric', 'digits_between:10,15'],
-            'image' => ['required', 'mimes:jpg,bmp,png']
-        ]);
-
-        $guest = Guest::whereEmail($validated['email'])
-            ->whereFirstName($validated['first_name'])
-            ->whereLastName($validated['last_name'])
-            ->firstOrFail();
-        $guest->update($validated);
-        $guest->saveImage($validated['image']);
-        $guest->checkin();
-
-        $reservation->checkin();
+        $reservation->checkin($request->validated());
 
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
@@ -142,23 +110,9 @@ class ReservationController extends Controller
      * @return ReservationResource
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, Reservation $reservation)
+    public function update(UpdateReservationRequest $request, Reservation $reservation)
     {
-        $this->validate($request, [
-            'start_date' => ['required', 'date'],
-            'start_hour' => ['required', 'date_format:H:i:s'],
-            'end_date' => ['required', 'date'],
-            'end_hour' => ['required', 'date_format:H:i:s'],
-            'room' => ['required', 'integer', 'min:1']
-        ]);
-
-        $roomStay = $reservation->roomStays()->firstOrFail();
-        $roomStay->start_date = $request->get('start_date');
-        $roomStay->start_hour = $request->get('start_hour');
-        $roomStay->end_date = $request->get('end_date');
-        $roomStay->end_hour = $request->get('start_hour');
-        $roomStay->rooms()->sync($request->get('room'));
-        $roomStay->save();
+        $reservation->update($request->validated());
 
         return ReservationResource::make($reservation->refresh());
     }
