@@ -26,8 +26,6 @@ use Illuminate\Http\UploadedFile;
  * @property $created_at
  * @property $updated_at
  * @method static whereEmail($email)
- * @method static whereFirstName($firstName)
- * @method static whereLastName($lastName)
  */
 class Guest extends Model
 {
@@ -77,7 +75,11 @@ class Guest extends Model
      */
     public function getFullNameAttribute()
     {
-        return sprintf("%s %s", $this->last_name, $this->first_name);
+        if ($this->last_name) {
+            return sprintf("%s %s", $this->last_name, $this->first_name);
+        }
+
+        return '';
     }
 
     /**
@@ -135,30 +137,6 @@ class Guest extends Model
     public static function scopeWhereEmail(Builder $query, $email)
     {
         return $query->where('email', $email);
-    }
-
-    /**
-     * Local query for guest via first name.
-     *
-     * @param Builder $query
-     * @param $firstName
-     * @return Builder
-     */
-    public static function scopeWhereFirstName(Builder $query, $firstName)
-    {
-        return $query->where('first_name', $firstName);
-    }
-
-    /**
-     * Local query for guest via last name.
-     *
-     * @param Builder $query
-     * @param $lastName
-     * @return Builder
-     */
-    public static function scopeWhereLastName(Builder $query, $lastName)
-    {
-        return $query->where('last_name', $lastName);
     }
 
     /**

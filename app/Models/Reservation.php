@@ -88,10 +88,7 @@ class Reservation extends Model
      */
     public function checkin(array $attributes)
     {
-        $guest = Guest::whereEmail($attributes['email'])
-            ->whereFirstName($attributes['first_name'])
-            ->whereLastName($attributes['last_name'])
-            ->firstOrFail();
+        $guest = Guest::whereEmail($attributes['email'])->firstOrFail();
 
         // Update guest's profile with the registration data and set status to 'Arrived'
         $guest->update($attributes);
