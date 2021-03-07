@@ -12,6 +12,7 @@ use Illuminate\Http\UploadedFile;
  *
  * @package App\Models
  * @property $id
+ * @property $unique_id
  * @property $first_name
  * @property $last_name
  * @property $email
@@ -169,6 +170,7 @@ class Guest extends Model
     public static function create(array $attributes)
     {
         $guest = new self();
+        $guest->unique_id = uniqid('', false);
         $guest->first_name = $attributes['first_name'];
         $guest->last_name = $attributes['last_name'];
         $guest->email = $attributes['email'];
@@ -178,16 +180,6 @@ class Guest extends Model
         $guest->room_stay_id = $attributes['room_stay_id'];
         $guest->reservation_id = $attributes['reservation_id'];
         $guest->save();
-
-        if (! empty($validated['invitations'])) {
-            foreach ($validated['invitations'] as $invitationEmail) {
-                $guest = new self();
-                $guest->email = $invitationEmail;
-                $guest->room_stay_id = $attributes['room_stay_id'];
-                $guest->reservation_id = $attributes['reservation_id'];
-                $guest->save();
-            }
-        }
 
         return $guest;
     }

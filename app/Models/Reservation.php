@@ -139,6 +139,7 @@ class Reservation extends Model
     public static function create(array $attributes)
     {
         $reservation = new self();
+        $reservation->unique_id = uniqid('', false);
         $reservation->comments = '';
         $reservation->owner_name = $attributes['first_name'] . " " . $attributes['last_name'];
         $reservation->total_amount = 388.89;
@@ -155,6 +156,17 @@ class Reservation extends Model
         $attributes['room_stay_id'] = $roomStay->id;
 
         Guest::create($attributes);
+
+        if (! empty($attributes['invitations'])) {
+            foreach ($attributes['invitations'] as $invitationEmail) {
+                $guest = new Guest();
+                $guest->unique_id = uniqid('', false);
+                $guest->email = $invitationEmail;
+                $guest->room_stay_id = $attributes['room_stay_id'];
+                $guest->reservation_id = $attributes['reservation_id'];
+                $guest->save();
+            }
+        }
 
         return $reservation;
     }
