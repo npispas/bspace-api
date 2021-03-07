@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 /**
  * Class Room represents all the rooms available in the system.
@@ -125,6 +123,7 @@ class Room extends Model
     public static function create(array $attributes)
     {
         $room = new self();
+        $room->unique_id = uniqid('', false);
         $room->name = $attributes['name'];
         $room->location = $attributes['location'];
         $room->interior_size = $attributes['interior_size'];
@@ -169,11 +168,13 @@ class Room extends Model
         $roomType = RoomType::findOrFail($attributes['room_type_id']);
         $roomType->rooms()->save($this);
 
-        $files = $attributes['images'];
+        if (isset($attributes['images'])) {
+            $files = $attributes['images'];
 
-        if (!empty($files)) {
-            foreach ($files as $file) {
-                $this->saveImage($file);
+            if (!empty($files)) {
+                foreach ($files as $file) {
+                    $this->saveImage($file);
+                }
             }
         }
 
