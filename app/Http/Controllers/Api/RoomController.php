@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class RoomController extends Controller
 {
@@ -76,10 +77,18 @@ class RoomController extends Controller
     {
         $validated = $request->validated();
 
-        $rooms = Room::whereOccupancy($validated['guest_count'])
+        $roomsWithoutRoomStays = Room::doesntHave('roomStays')
+            ->whereOccupancy($validated['guest_count'])
+            ->with('images', 'roomType')
+            ->get();
+
+        $rooms = Room::has('roomStays')
+            ->whereOccupancy($validated['guest_count'])
             ->whereAvailable($validated['start_date'], $validated['end_date'])
             ->with('images', 'roomType')
             ->get();
+
+        $rooms = $rooms->merge($roomsWithoutRoomStays);
 
         if (count($rooms) === 0) {
             throw new ModelNotFoundException('No query results for App\Models\Room');

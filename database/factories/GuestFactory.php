@@ -22,6 +22,7 @@ class GuestFactory extends Factory
     public function definition()
     {
         return [
+            'unique_id' => uniqid('', false),
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,

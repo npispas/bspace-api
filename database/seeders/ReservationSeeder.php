@@ -19,6 +19,11 @@ class ReservationSeeder extends Seeder
      */
     public function run()
     {
+        Room::flushEventListeners();
+        Reservation::flushEventListeners();
+        Guest::flushEventListeners();
+        RoomStay::flushEventListeners();
+
         $roomType = RoomType::factory()->create();
 
         $room = Room::factory()

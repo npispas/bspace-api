@@ -14,7 +14,7 @@ class UpdateReservationRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::user()->can('update_reservations');
+        return Auth::user()->can('edit_reservations');
     }
 
     /**
