@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Guest;
+use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\RoomStay;
 use App\Observers\GuestObserver;
+use App\Observers\ReservationObserver;
 use App\Observers\RoomObserver;
 use App\Observers\RoomStayObserver;
 use Illuminate\Auth\Events\Registered;
@@ -32,6 +34,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Reservation::observe(ReservationObserver::class);
         RoomStay::observe(RoomStayObserver::class);
         Guest::observe(GuestObserver::class);
         Room::observe(RoomObserver::class);

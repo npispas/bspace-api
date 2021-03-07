@@ -22,32 +22,10 @@ class RoomStayObserver
 
         foreach ($guests as $guest) {
             Mail::to($guest->email)->send(new ReservationConfirmed(
+                'Your reservation\'s has been modified.',
                 $reservation,
                 $roomStay,
-                $room,
-                'Your reservation\'s has been modified.'
-            ));
-        }
-    }
-
-    /**
-     * Handle the RoomStay "deleted" event.
-     *
-     * @param  \App\Models\RoomStay  $roomStay
-     * @return void
-     */
-    public function deleted(RoomStay $roomStay)
-    {
-        $reservation = $roomStay->reservation;
-        $room = $roomStay->rooms()->firstOrFail();
-        $guests = $roomStay->guests;
-
-        foreach ($guests as $guest) {
-            Mail::to($guest->email)->send(new ReservationConfirmed(
-                $reservation,
-                $roomStay,
-                $room,
-                'Your reservation\'s has been canceled.'
+                $room
             ));
         }
     }
