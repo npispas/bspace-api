@@ -1,6 +1,7 @@
 @component('mail::message')
 Hello there,<br><br>{{ $message }}
 
+@if (! is_null($reservation))
 @component('vendor.mail.html.panel')
 <strong>{{ $room->roomType->name }} • {{ $room->name }}</strong><br>
 ![RoomImage](https://i.stack.imgur.com/bENi3.jpg)
@@ -13,6 +14,7 @@ Total: <strong>{{ $reservation->total_amount . ' ' . $reservation->currency }}</
 @component('mail::button', ['url' => 'http://b-space.local:81'])
 Checkin
 @endcomponent
+@endif
 
 Thanks,<br>
 {{ config('app.name') }} Team.
