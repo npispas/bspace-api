@@ -44,12 +44,12 @@ class ReservationConfirmed extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param Reservation $reservation
-     * @param RoomStay $roomStay
-     * @param Room $room
      * @param string $message
+     * @param Reservation|null $reservation
+     * @param RoomStay|null $roomStay
+     * @param Room|null $room
      */
-    public function __construct(Reservation $reservation, RoomStay $roomStay, Room $room, string $message)
+    public function __construct(string $message, Reservation $reservation = null, RoomStay $roomStay = null, Room $room = null)
     {
         $this->reservation = $reservation;
         $this->roomStay = $roomStay;
