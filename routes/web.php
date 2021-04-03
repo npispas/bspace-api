@@ -19,6 +19,12 @@ Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login
 Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'register'])
     ->middleware('guest');
 
+Route::get('/redirect', [\App\Http\Controllers\Auth\LoginController::class, 'redirectToProvider'])
+    ->middleware('guest');
+
+Route::get('/callback', [\App\Http\Controllers\Auth\LoginController::class, 'handleProviderCallback'])
+    ->middleware('guest');
+
 Route::get('email/verify/{id}', [\App\Http\Controllers\Auth\VerificationController::class, 'verify'])
     ->name('verification.verify');
 
