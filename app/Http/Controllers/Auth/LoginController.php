@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Image;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
+use Spatie\Permission\Models\Role;
 
 class LoginController extends Controller
 {
@@ -85,5 +88,55 @@ class LoginController extends Controller
         return User::whereEmail($request->get('email'))
             ->whereVerified()
             ->first();
+    }
+
+    /**
+     * Redirect the user to the Google authentication page.
+     *
+     * @return mixed
+     */
+    public function redirectToProvider()
+    {
+        return Socialite::driver('google')->redirect()->getTargetUrl();
+    }
+
+    /**
+     * Obtain the user information from Google.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('google')->user();
+        $existingUser = User::whereEmail($user->email)->first();
+
+        if ($existingUser) {
+            auth()->login($existingUser);
+        } else {
+            $newUser = new User;
+            $newUser->username = $user->user['name'];
+            $newUser->first_name = $user->user['given_name'];
+            $newUser->last_name = $user->user['family_name'];
+            $newUser->email_verified_at = now();
+            $newUser->email = $user->email;
+            $newUser->save();
+
+            if (! empty($user->avatar)) {
+                $image = new Image;
+                $image->url = $user->avatar;
+                $image->path = '';
+                $image->created_at = now();
+                $image->updated_at = now();
+
+                $newUser->image()->save($image);
+            }
+
+            $userRole = Role::findByName('user');
+            $newUser->assignRole($userRole);
+
+            auth()->login($newUser, true);
+        }
+
+        return redirect()->away('http://b-space.com:81');
     }
 }
