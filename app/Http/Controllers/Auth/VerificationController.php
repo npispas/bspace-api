@@ -29,7 +29,7 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'http://b-space.local:81/verified';
+    protected $redirectTo = 'http://b-space.com:81/verified';
 
     /**
      * Create a new controller instance.
